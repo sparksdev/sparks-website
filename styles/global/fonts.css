@@ -1,0 +1,15 @@
+@font-face {
+  font-family: 'Noto Sans Mono';
+  src: url('../fonts/NotoSansMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'Noto Sans Mono';
+  src: url('../fonts/NotoSansMono-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: fallback;
+}

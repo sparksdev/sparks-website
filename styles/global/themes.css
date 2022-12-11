@@ -1,0 +1,154 @@
+[data-theme='dark'],
+[data-theme='dark'] ::before,
+[data-theme='dark'] ::after {
+  /* main */
+  --main-background-color: #222222;
+  --main-font-color: #dddddd;
+
+  /* box shadows */
+  --box-shadow-color: rgba(0, 0, 0, 0.5);
+
+  /* selected text */
+  --selection-background-color: var(--main-background-color);
+  --selection-font-color: var(--main-font-color);
+
+  /* headings */
+  --h1-font-color: var(--main-font-color);
+  --h2-font-color: var(--main-font-color);
+  --h3-font-color: var(--main-font-color);
+  --h4-font-color: var(--main-font-color);
+  --h5-font-color: var(--main-font-color);
+  --h6-font-color: var(--main-font-color);
+
+  /* text */
+  --p-font-color: var(--main-font-color);
+  --a-font-color: var(--main-font-color);
+  --a-font-color--visited: #acacac;
+
+  --small-font-color: var(--main-font-color);
+  --sub-font-color: var(--main-font-color);
+  --sup-font-color: var(--main-font-color);
+
+  /* formatted text */
+  --blockquote-background-color: #363636;
+  --blockquote-font-color: var(--main-font-color);
+  --blockquote-border-color: var(--main-font-color);
+
+  --pre-background-color: var(--blockquote-background-color);
+  --pre-font-color: var(--main-font-color);
+
+  --code-background-color: var(--blockquote-background-color);
+  --code-font-color: var(--main-font-color);
+
+  --kdb-background-color: var(--blockquote-background-color);
+  --kdb-font-color: var(--main-font-color);
+
+  --samp-background-color: var(--blockquote-background-color);
+  --samp-font-color: var(--main-font-color);
+
+  /* tables */
+  --table-border-color: var(--blockquote-background-color);
+  --li-font-color: var(--main-font-color);
+
+  /* inputs */
+  --input-background-color: var(--main-font-color);
+  --input-background-color--disabled: var(--a-font-color--visited);
+  --input-background-color--selection: var(--main-background-color);
+  --input-font-color--placeholder: #929292;
+  --input-font-color: var(--main-background-color);
+  --input-font-color--disabled: var(--blockquote-background-color);
+  --input-font-color--selection: var(--main-font-color);
+  --input-border-color: var(--main-font-color);
+  --input-border-color--focused: var(--main-font-color);
+  --input-border-color--disabled: var(--a-font-color--visited);
+
+  /* buttons */
+  --button-background-color: var(--main-font-color);
+  --button-background-color--hover: #eeeeee;
+  --button-background-color--active: var(--a-font-color--visited);
+  --button-background-color--disabled: var(--a-font-color--visited);
+  --button-font-color: var(--main-background-color);
+  --button-font-color--disabled: var(--blockquote-background-color);
+  --button-border-color: var(--blockquote-background-color);
+  --button-border-color--hover: var(--main-background-color);
+  --button-border-color--focused: var(--main-font-color);
+  --button-border-color--active: var(--a-font-color--visited);
+  --button-border-color--disabled: var(--a-font-color--visited);
+
+  /* miscellaneous */
+  --hr-border-color: var(--a-font-color--visited);
+}
+
+[data-theme='light'] {
+  /* main */
+  --main-background-color: #f1f1f1;
+  --main-font-color: #414141;
+
+  /* box shadows */
+  --box-shadow-color: rgba(0, 0, 0, 0.1);
+
+  /* selected text */
+  --selection-background-color: var(--main-background-color);
+  --selection-font-color: var(--main-font-color);
+
+  /* headings */
+  --h1-font-color: var(--main-font-color);
+  --h2-font-color: var(--main-font-color);
+  --h3-font-color: var(--main-font-color);
+  --h4-font-color: var(--main-font-color);
+  --h5-font-color: var(--main-font-color);
+  --h6-font-color: var(--main-font-color);
+
+  /* text */
+  --p-font-color: var(--main-font-color);
+  --a-font-color: var(--main-font-color);
+  --a-font-color--visited: #888888;
+
+  --small-font-color: var(--main-font-color);
+  --sub-font-color: var(--main-font-color);
+  --sup-font-color: var(--main-font-color);
+
+  /* formatted text */
+  --blockquote-background-color: #e4e4e4;
+  --blockquote-font-color: var(--main-font-color);
+  --blockquote-border-color: var(--main-font-color);
+
+  --pre-background-color: var(--blockquote-background-color);
+  --pre-font-color: var(--main-font-color);
+
+  --code-background-color: var(--blockquote-background-color);
+  --code-font-color: var(--main-font-color);
+
+  --kdb-background-color: var(--blockquote-background-color);
+  --kdb-font-color: var(--main-font-color);
+
+  --samp-background-color: var(--blockquote-background-color);
+  --samp-font-color: var(--main-font-color);
+
+  /* tables */
+  --table-border-color: var(--blockquote-background-color);
+  --li-font-color: var(--main-font-color);
+
+  /* inputs */
+  --input-background-color: var(--main-background-color);
+  --input-background-color--disabled: #cdcdcd;
+  --input-background-color--selection: var(--main-font-color);
+  --input-font-color--placeholder: #7c7c7c;
+  --input-font-color: var(--main-font-color);
+  --input-font-color--disabled: var(--input-font-color--placeholder);
+  --input-font-color--selection: var(--main-background-color);
+  --input-border-color: var(--main-font-color);
+  --input-border-color--focused: var(--main-font-color);
+  --input-border-color--disabled: var(--input-font-color--placeholder);
+
+  /* buttons */
+  --button-background-color: var(--main-font-color);
+  --button-background-color--hover: #505050;
+  --button-background-color--active: #303030;
+  --button-background-color--disabled: var(--a-font-color--visited);
+  --button-font-color: var(--main-background-color);
+  --button-font-color--disabled: var(--blockquote-background-color);
+
+  /* miscellaneous */
+  --hr-border-color: var(--input-font-color--placeholder);
+}

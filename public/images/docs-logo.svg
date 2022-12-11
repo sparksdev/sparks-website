@@ -1,0 +1,16 @@
+<svg id="favicon" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg">
+   <style>
+      #favicon {
+         margin-top: 3px;
+      }
+      #favicon rect {
+         fill: #24292f;
+      }
+      @media (prefers-color-scheme: dark) {
+         #favicon rect {
+            fill: #c9d1d9;
+         }
+      }
+   </style>
+    <rect style="fill-opacity:1" width="24" height="24" transform="rotate(45)" x="22" y="-12"></rect>
+</svg>

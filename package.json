@@ -1,0 +1,38 @@
+{
+  "name": "sparks-website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "predev": "yarn prisma migrate deploy",
+    "build": "next build",
+    "prebuild": "yarn prettier --write .",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.7.1",
+    "@sendgrid/mail": "^7.7.0",
+    "@usedapp/core": "^1.2.2",
+    "cuid": "^2.1.8",
+    "ethers": "^5.7.2",
+    "iconoir-react": "^5.5.2",
+    "iron-session": "^6.3.1",
+    "memory-cache": "^0.2.0",
+    "next": "13.0.6",
+    "react": "18.2.0",
+    "react-countdown": "^2.3.5",
+    "react-dom": "18.2.0",
+    "react-identicons": "^1.2.5",
+    "react-type-animation": "^2.1.2",
+    "tweetnacl": "^1.0.3",
+    "tweetnacl-util": "^0.15.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.29.0",
+    "eslint-config-next": "^13.0.6",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.8.1",
+    "prisma": "^4.7.1"
+  }
+}
