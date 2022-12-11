@@ -8,7 +8,12 @@ export default function MemberStats() {
     const result = await fetch('/api/application/member-stats')
     if (!result.ok) return
     const { report, updatedAt } = await result.json()
-    setReport(report.flatMap(text => ([text, 2000])))
+    if (report.length) {
+      setReport([ 
+        'We are SPARKS', 
+        ...report.flatMap(text => ([text, 2000])) 
+      ])
+    }
   }
 
   useEffect(() => {
