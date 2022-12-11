@@ -34,7 +34,7 @@ export default function Register({ onSubmit, onCancel }) {
       <style jsx>{styles}</style>
       <h4>Create Profile</h4>
       <p>
-        Creating a profile stores only your account address. Any data you
+        Creating a profile only stores a hash of your account address. Any data you
         connect is encrypted with keys only you control.
       </p>
       <p>
