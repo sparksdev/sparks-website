@@ -11,6 +11,7 @@ export default function MemberStats() {
     if (report.length) {
       setReport([ 
         'We are SPARKS', 
+        2000,
         ...report.flatMap(text => ([text, 2000])) 
       ])
     }
