@@ -57,9 +57,7 @@ async function checkForDnsRecord(url, challenge, resolve, count) {
   })
 
   const json = await result.json()
-  const txt = json.data.TXT || []
-  console.log(txt)
-
+  const txt = json.data?.TXT || []
   const verified = !!txt
     .flatMap(txt => txt)
     .filter(txt => txt === challenge).length
