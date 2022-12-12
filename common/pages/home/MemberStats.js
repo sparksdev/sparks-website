@@ -28,7 +28,7 @@ export default function MemberStats() {
           margin-top: 1.2rem;
         }
       `}</style>
-      {(report && report.length) ? (
+      {report && report.length ? (
         <TypeAnimation
           className="memberStats"
           sequence={report}
@@ -39,7 +39,7 @@ export default function MemberStats() {
           repeat={Infinity}
         />
       ) : (
-        <p className='memberStats'>&nbsp;</p>
+        <p className="memberStats">&nbsp;</p>
       )}
     </>
   )
