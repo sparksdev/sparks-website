@@ -9,20 +9,21 @@ import apps from '@modules/applications'
 export default function Dialog({ onVerified, onCancel, user }) {
   const { sign } = useMetamask()
   const { closeDialog } = useDialog()
-  const [email, setEmail] = useState(null)
+  const [domain, setDomain] = useState(null)
   const [waiting, setWaiting] = useState(false)
-  const [nonceSent, setNonceSent] = useState(false)
+  const [challenge, setChallenge] = useState(false)
+  const [nonce, setNonce] = useState(null)
   const [error, setError] = useState(null)
 
   async function verify(e) {
     e.preventDefault()
     setError(null)
     setWaiting(true)
-    const nonce = e.target.elements.nonce.value
-    let result = await fetch('/api/attestation/email', {
+
+    let result = await fetch('/api/attestation/domain', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nonce, email }),
+      body: JSON.stringify({ nonce, domain }),
     })
 
     if (!result.ok) {
@@ -39,7 +40,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
       humanId: secretBox.encrypt(humanId, keyPair.secretKey),
     }
 
-    result = await fetch('/api/attestation/email', {
+    result = await fetch('/api/attestation/domain', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(encrypted),
@@ -54,7 +55,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
     for (let app of apps) {
       if (user.applications[app.service] && app.addAttestation) {
         app.addAttestation({
-          service: 'email',
+          service: 'domain',
           humanId: sharedBox.encrypt(
             humanId,
             keyPair.secretKey,
@@ -71,25 +72,28 @@ export default function Dialog({ onVerified, onCancel, user }) {
       }
     }
 
+    e.target.elements.nonce.value = ''
     closeDialog()
     setWaiting(false)
     onVerified(attestation)
   }
 
-  async function sendNonce(e) {
+  async function getChallenge(e) {
     e.preventDefault()
     setError(null)
     setWaiting(true)
-    const email = e.target.elements.email.value
-    const result = await fetch(`/api/attestation/email?email=${email}`)
+    const domain = e.target.elements.domain.value
+    const result = await fetch(`/api/attestation/domain?domain=${domain}`)
     if (!result.ok) {
       setWaiting(false)
       return setError(await result.text())
     }
-    e.target.elements.email.value = ''
-    setEmail(email)
+    const { challenge, nonce } = await result.json()
+    e.target.elements.domain.value = ''
+    setDomain(domain)
+    setNonce(nonce)
     setWaiting(false)
-    setNonceSent(true)
+    setChallenge(challenge)
   }
 
   function cancel(e) {
@@ -127,24 +131,19 @@ export default function Dialog({ onVerified, onCancel, user }) {
           margin: 0;
           margin-bottom: 2.4rem;
         }
+        pre {
+          text-align: left;
+        }
       `}</style>
-      {nonceSent ? (
+      {challenge ? (
         <form onSubmit={verify}>
           <h4>Confirm Challenge</h4>
           <p>
-            Enter the code you recieved, be sure to check your spam if it's been
-            a few minutes.
+            To attest ownership of your domain add a <code>TXT</code> record to your DNS records with the following value then click verify.
           </p>
-          <span>
-            <label>Email Code</label>
-            <input
-              name="nonce"
-              type="text"
-              defaultValue={''}
-              placeholder="123LKJ02348RSFI3KJH3"
-              required
-            />
-          </span>
+          <pre>
+            {challenge}
+          </pre>
           {error ? <p className="error">{error}</p> : <></>}
           <div>
             <button disabled={waiting} onClick={cancel}>
@@ -156,19 +155,19 @@ export default function Dialog({ onVerified, onCancel, user }) {
           </div>
         </form>
       ) : (
-        <form onSubmit={sendNonce}>
-          <h4>Send Email Code</h4>
+        <form onSubmit={getChallenge}>
+          <h4>Generate Challenge</h4>
           <p>
-            Enter your email to recieve a unique code to confirm ownership. Once
-            confirmed it will be encrypted & stored with keys only you control.
+            Enter your domain to recieve a unique code to confirm ownership. Once
+            confirmed it will be encrypted & stored with keys only you control. Do not include http or www.
           </p>
           <span>
-            <label>Email Address</label>
+            <label>Domain</label>
             <input
-              name="email"
-              type="email"
+              name="domain"
               defaultValue={''}
-              placeholder="username@email.com"
+              pattern=".+\..+"
+              placeholder="example.com"
               required
             />
           </span>
@@ -177,7 +176,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
               cancel
             </button>
             <button disabled={waiting} type="submit">
-              send code
+              get code
             </button>
           </div>
         </form>

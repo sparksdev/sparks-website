@@ -77,13 +77,15 @@ async function updateStats(req, res) {
   }
 
   const emailCount = services.email.data.length
+  const websiteCount = services.domain.data.length
   const twitterFollowers = services.twitter.data.reduce((t, a) => (t + a.public_metrics.followers_count), 0)
   const twitterFollowing = services.twitter.data.reduce((t, a) => (t + a.public_metrics.following_count), 0)
   const twitterTweets = services.twitter.data.reduce((t, a) => (t + a.public_metrics.tweet_count), 0)
   const twitterListed = services.twitter.data.reduce((t, a) => (t + a.public_metrics.listed_count), 0)
 
   const report = []
-  if (emailCount) report.push(`We have ${emailCount} verified Emails`)
+  if (emailCount) report.push(`We have verified ${emailCount} Emails`)
+  if (websiteCount) report.push(`We own ${websiteCount} Websites`)
   if (twitterFollowers) report.push(`We are followed by ${twitterFollowers} Twitter users`,)
   if (twitterFollowing) report.push(`We follow ${twitterFollowing} Twitter accounts`,)
   if (twitterTweets) report.push(`We have published ${twitterTweets} Tweets`,)

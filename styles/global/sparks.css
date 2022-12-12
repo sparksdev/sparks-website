@@ -119,6 +119,7 @@ pre {
   margin-top: 0px;
   margin-bottom: 2.4rem;
   font-size: 1.6rem;
+  white-space: pre;
   color: var(--pre-font-color);
   transition: background-color 250ms, color 250ms;
 }
