@@ -21,10 +21,6 @@ export default function MemberStats() {
     getReport()
   }, [])
 
-  if (!report || !report.length) {
-    return <></>
-  }
-
   return (
     <>
       <style jsx>{`
@@ -32,15 +28,19 @@ export default function MemberStats() {
           margin-top: 1.2rem;
         }
       `}</style>
-      <TypeAnimation
-        className="memberStats"
-        sequence={report}
-        wrapper="p"
-        cursor={true}
-        speed={75}
-        deletionSpeed={99}
-        repeat={Infinity}
-      />
+      {(report && report.length) ? (
+        <TypeAnimation
+          className="memberStats"
+          sequence={report}
+          wrapper="p"
+          cursor={true}
+          speed={75}
+          deletionSpeed={99}
+          repeat={Infinity}
+        />
+      ) : (
+        <p className='memberStats'>&nbsp;</p>
+      )}
     </>
   )
 }
