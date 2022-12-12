@@ -25,7 +25,9 @@ export async function verify({ req, res }) {
   if (!record) {
     return res
       .status(403)
-      .send("can't find record yet - wait a few minutes and try again, it can take time to propagate")
+      .send(
+        "can't find record yet - wait a few minutes and try again, it can take time to propagate"
+      )
   }
 
   delete session.attest.domain
@@ -44,26 +46,26 @@ async function checkForDnsRecord(url, challenge, resolve, count) {
     })
   }
 
-  const result = await fetch("https://api.geekflare.com/dnsrecord", {
+  const result = await fetch('https://api.geekflare.com/dnsrecord', {
     method: 'POST',
     headers: {
-      "x-api-key": process.env.GEEKFLARE_API_KEY,
-      "Content-Type": "application/json",
+      'x-api-key': process.env.GEEKFLARE_API_KEY,
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       url,
-      types: ['TXT']
-    })
+      types: ['TXT'],
+    }),
   })
 
   const json = await result.json()
   const txt = json.data?.TXT || []
   const verified = !!txt
-    .flatMap(txt => txt)
-    .filter(txt => txt === challenge).length
+    .flatMap((txt) => txt)
+    .filter((txt) => txt === challenge).length
 
   console.log(verified)
-    
+
   if (!verified && count < 12) {
     return setTimeout(() => {
       checkForDnsRecord(url, challenge, resolve, count + 1)

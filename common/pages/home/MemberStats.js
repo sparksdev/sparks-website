@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from 'react'
 import { TypeAnimation } from 'react-type-animation'
 
 export default function MemberStats() {
@@ -9,10 +9,10 @@ export default function MemberStats() {
     if (!result.ok) return
     const { report, updatedAt } = await result.json()
     if (report.length) {
-      setReport([ 
-        'We are SPARKS', 
+      setReport([
+        'We are SPARKS',
         2000,
-        ...report.flatMap(text => ([text, 2000])) 
+        ...report.flatMap((text) => [text, 2000]),
       ])
     }
   }
@@ -33,7 +33,7 @@ export default function MemberStats() {
         }
       `}</style>
       <TypeAnimation
-        className='memberStats'
+        className="memberStats"
         sequence={report}
         wrapper="p"
         cursor={true}

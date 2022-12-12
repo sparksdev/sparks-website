@@ -139,11 +139,10 @@ export default function Dialog({ onVerified, onCancel, user }) {
         <form onSubmit={verify}>
           <h4>Confirm Challenge</h4>
           <p>
-            To attest ownership of your domain add a <code>TXT</code> record to your DNS records with the following value then click verify.
+            To attest ownership of your domain add a <code>TXT</code> record to
+            your DNS records with the following value then click verify.
           </p>
-          <pre>
-            {challenge}
-          </pre>
+          <pre>{challenge}</pre>
           {error ? <p className="error">{error}</p> : <></>}
           <div>
             <button disabled={waiting} onClick={cancel}>
@@ -158,8 +157,9 @@ export default function Dialog({ onVerified, onCancel, user }) {
         <form onSubmit={getChallenge}>
           <h4>Generate Challenge</h4>
           <p>
-            Enter your domain to recieve a unique code to confirm ownership. Once
-            confirmed it will be encrypted & stored with keys only you control. Do not include http or www.
+            Enter your domain to recieve a unique code to confirm ownership.
+            Once confirmed it will be encrypted & stored with keys only you
+            control. Do not include http or www.
           </p>
           <span>
             <label>Domain</label>

@@ -2,8 +2,7 @@ import { withSession } from '@utilities/session/server-routes'
 import { prisma } from '@utilities/database'
 import { getAttestation } from '@modules/attestations'
 import { decrypt } from '@utilities/encryption/shared-box'
-import cache from 'memory-cache';
-
+import cache from 'memory-cache'
 
 async function addIdentifiers(req, res) {
   const { data, publicKey } = req.body
@@ -40,37 +39,37 @@ async function updateStats(req, res) {
   const timestamp = new Date().getTime()
   const refreshMinutes = 5
 
-  if (cached && timestamp - cached.updatedAt < (60 * 1000 * refreshMinutes)) {
+  if (cached && timestamp - cached.updatedAt < 60 * 1000 * refreshMinutes) {
     return res.json(cached)
   }
 
   const encryptedRecords = await prisma.memberStats.findMany()
   const records = encryptedRecords
-  .map(record => ({
-    service: record.service,
-    systemId: decrypt(
-      record.systemId,
-      process.env.STATS_SECRET_KEY,
-      record.publicKey
-    ),
-    humanId: decrypt(
-      record.humanId,
-      process.env.STATS_SECRET_KEY,
-      record.publicKey
-    )
-  }))
-  .filter(({ systemId, humanId }) => {
-    return !!(systemId && humanId)
-  })
-  .reduce((records, record) => {
-    const { service, systemId, humanId } = record
-    records[service] = records[service] || []
-    records[service].push({ systemId, humanId })
-    return records
-  }, {})
+    .map((record) => ({
+      service: record.service,
+      systemId: decrypt(
+        record.systemId,
+        process.env.STATS_SECRET_KEY,
+        record.publicKey
+      ),
+      humanId: decrypt(
+        record.humanId,
+        process.env.STATS_SECRET_KEY,
+        record.publicKey
+      ),
+    }))
+    .filter(({ systemId, humanId }) => {
+      return !!(systemId && humanId)
+    })
+    .reduce((records, record) => {
+      const { service, systemId, humanId } = record
+      records[service] = records[service] || []
+      records[service].push({ systemId, humanId })
+      return records
+    }, {})
 
   const services = {}
-  for(let service in records) {
+  for (let service in records) {
     const attestation = getAttestation(service)
     const data = await attestation.data(records[service])
     if (data) services[service] = data
@@ -78,18 +77,33 @@ async function updateStats(req, res) {
 
   const emailCount = services.email.data.length
   const websiteCount = services.domain.data.length
-  const twitterFollowers = services.twitter.data.reduce((t, a) => (t + a.public_metrics.followers_count), 0)
-  const twitterFollowing = services.twitter.data.reduce((t, a) => (t + a.public_metrics.following_count), 0)
-  const twitterTweets = services.twitter.data.reduce((t, a) => (t + a.public_metrics.tweet_count), 0)
-  const twitterListed = services.twitter.data.reduce((t, a) => (t + a.public_metrics.listed_count), 0)
+  const twitterFollowers = services.twitter.data.reduce(
+    (t, a) => t + a.public_metrics.followers_count,
+    0
+  )
+  const twitterFollowing = services.twitter.data.reduce(
+    (t, a) => t + a.public_metrics.following_count,
+    0
+  )
+  const twitterTweets = services.twitter.data.reduce(
+    (t, a) => t + a.public_metrics.tweet_count,
+    0
+  )
+  const twitterListed = services.twitter.data.reduce(
+    (t, a) => t + a.public_metrics.listed_count,
+    0
+  )
 
   const report = []
   if (emailCount) report.push(`We have verified ${emailCount} Emails`)
   if (websiteCount) report.push(`We own ${websiteCount} Websites`)
-  if (twitterFollowers) report.push(`We are followed by ${twitterFollowers} Twitter users`,)
-  if (twitterFollowing) report.push(`We follow ${twitterFollowing} Twitter accounts`,)
-  if (twitterTweets) report.push(`We have published ${twitterTweets} Tweets`,)
-  if (twitterListed) report.push(`We are members of ${twitterListed} Twitter lists`)
+  if (twitterFollowers)
+    report.push(`We are followed by ${twitterFollowers} Twitter users`)
+  if (twitterFollowing)
+    report.push(`We follow ${twitterFollowing} Twitter accounts`)
+  if (twitterTweets) report.push(`We have published ${twitterTweets} Tweets`)
+  if (twitterListed)
+    report.push(`We are members of ${twitterListed} Twitter lists`)
 
   cache.put('report', { report, updatedAt: new Date().getTime() })
   return res.json({ report, updatedAt: new Date().getTime() })
