@@ -1,6 +1,5 @@
 import { ethers } from 'ethers'
-
-
+import { hash } from '@utilities/encryption/utilities'
 
 export async function challenge({ req, res, nonce }) {
   const {
@@ -25,6 +24,10 @@ export async function verify({ req, res }) {
   const address = await ethers.utils.verifyMessage(nonce, body.signature)
   if (!address || address !== creator) {
     return res.status(403).send('address mismatch')
+  }
+
+  if (hash(creator) !== session.userId) {
+    return res.status(403).send('must be logged in with creator account')
   }
 
   const isCreator = await isContractCreator(contract, creator)
