@@ -83,7 +83,7 @@ async function updateStats(req, res) {
   const twitterListed = services.twitter.data.reduce((t, a) => (t + a.public_metrics.listed_count), 0)
 
   const report = []
-  if (emailCount) report.push(`We have ${emailCount} unique Emails`)
+  if (emailCount) report.push(`We have ${emailCount} verified Emails`)
   if (twitterFollowers) report.push(`We are followed by ${twitterFollowers} Twitter users`,)
   if (twitterFollowing) report.push(`We follow ${twitterFollowing} Twitter accounts`,)
   if (twitterTweets) report.push(`We have published ${twitterTweets} Tweets`,)
