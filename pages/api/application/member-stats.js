@@ -45,9 +45,7 @@ async function updateStats(req, res) {
   }
 
   const encryptedRecords = await prisma.memberStats.findMany()
-  const tmprecord = [ ...encryptedRecords, ...encryptedRecords, ...encryptedRecords, ...encryptedRecords, ...encryptedRecords, ...encryptedRecords ]
-
-  const records = tmprecord
+  const records = encryptedRecords
   .map(record => ({
     service: record.service,
     systemId: decrypt(
