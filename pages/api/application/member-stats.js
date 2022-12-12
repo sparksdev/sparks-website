@@ -24,7 +24,7 @@ async function addIdentifiers(req, res) {
 
 async function removeIdentifiers(req, res) {
   const { userId } = req.session
-  const hash = decodeURIComponent(req.query.hash)
+  const hash = req.query.hash ? decodeURIComponent(req.query.hash) : null
   let result
   if (hash) {
     result = await prisma.memberStats.delete({ where: { hash } })
