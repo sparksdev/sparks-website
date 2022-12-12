@@ -64,8 +64,6 @@ async function checkForDnsRecord(url, challenge, resolve, count) {
     .flatMap((txt) => txt)
     .filter((txt) => txt === challenge).length
 
-  console.log(verified)
-
   if (!verified && count < 12) {
     return setTimeout(() => {
       checkForDnsRecord(url, challenge, resolve, count + 1)

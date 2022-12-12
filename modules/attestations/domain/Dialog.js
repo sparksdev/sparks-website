@@ -72,7 +72,6 @@ export default function Dialog({ onVerified, onCancel, user }) {
       }
     }
 
-    e.target.elements.nonce.value = ''
     closeDialog()
     setWaiting(false)
     onVerified(attestation)
