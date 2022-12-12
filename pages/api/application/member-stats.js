@@ -95,7 +95,7 @@ async function updateStats(req, res) {
   )
 
   const report = []
-  if (emailCount) report.push(`We have verified ${emailCount} Emails`)
+  if (emailCount) report.push(`We have ${emailCount} verified Emails`)
   if (websiteCount) report.push(`We own ${websiteCount} Websites`)
   if (twitterFollowers)
     report.push(`We are followed by ${twitterFollowers} Twitter users`)
