@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "predev": "yarn prisma migrate deploy",
-    "build": "next build",
+    "build": "prisma generate && prisma migrate deploy && next build",
     "prebuild": "yarn prettier --write .",
     "start": "next start",
     "lint": "next lint"
