@@ -7,7 +7,6 @@ import Content from '@pages/member/Content'
 import applications from '@modules/applications'
 import Card from '@pages/member/apps/Card'
 import CardLayout from '@pages/member/CardLayout'
-import AppDialog from '@pages/member/apps/Dialog'
 import PageDesc from '@pages/member/PageDesc'
 
 export default function Member({ user, session: { userId } }) {
@@ -22,13 +21,13 @@ export default function Member({ user, session: { userId } }) {
           SPARKS ecosystem as well as third parties.
         </PageDesc>
         <CardLayout>
-          {applications.map((app, index) => {
+          {applications.map(({ Dialog, ...app }, index) => {
             return (
               <Card
                 key={`${app.id}-${index}`}
                 {...app}
                 user={user}
-                Dialog={() => <AppDialog user={user} {...app} />}
+                Dialog={() => <Dialog user={user} {...app} />}
               />
             )
           })}

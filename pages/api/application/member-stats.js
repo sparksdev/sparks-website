@@ -77,6 +77,7 @@ async function updateStats(req, res) {
 
   const emailCount = services.email?.data.length
   const websiteCount = services.domain?.data.length
+  const smartContractCount = services.smartContract?.data.length
   const twitterFollowers = services.twitter?.data.reduce(
     (t, a) => t + a.public_metrics.followers_count,
     0
@@ -97,6 +98,7 @@ async function updateStats(req, res) {
   const report = []
   if (emailCount) report.push(`We have ${emailCount} verified Emails`)
   if (websiteCount) report.push(`We own ${websiteCount} Websites`)
+  if (smartContractCount) report.push(`We have deployed ${smartContractCount} Smart Contracts`)
   if (twitterFollowers)
     report.push(`We are followed by ${twitterFollowers} Twitter users`)
   if (twitterFollowing)

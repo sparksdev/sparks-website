@@ -3,6 +3,43 @@ import cuid from 'cuid'
 import { useState } from 'react'
 import useMetamask from '@hooks/metamask'
 import { useRouter } from 'next/router'
+import css from 'styled-jsx/css'
+
+const styles = css`
+  form {
+    text-align: center;
+  }
+  h4 {
+    margin-top: 1.2rem;
+    text-align: center;
+  }
+  span {
+    display: inline-block;
+    text-align: left;
+  }
+  p {
+    text-align: justify;
+  }
+  ul {
+    display: inline-block;
+    margin: 0 auto;
+    text-align: left;
+    margin-bottom: 2.4rem;
+  }
+  div {
+    display: flex;
+    justify-content: center;
+  }
+  button {
+    margin: 0 1.2rem;
+  }
+  p.error {
+    font-weight: bold;
+    font-style: italic;
+    margin: 0;
+    margin-bottom: 2.4rem;
+  }
+`
 
 export default function Dialog({
   user,
@@ -12,8 +49,8 @@ export default function Dialog({
   onCancel,
 }) {
   const { closeDialog } = useDialog()
-  const [waiting, setWaiting] = useState(false)
-  const [error, setError] = useState(null)
+  const [ waiting, setWaiting ] = useState(false)
+  const [ error, setError ] = useState(null)
   const { sign } = useMetamask()
   const router = useRouter()
 
@@ -51,41 +88,7 @@ export default function Dialog({
 
   return (
     <form onSubmit={enable}>
-      <style jsx>{`
-        form {
-          text-align: center;
-        }
-        h4 {
-          margin-top: 1.2rem;
-          text-align: center;
-        }
-        span {
-          display: inline-block;
-          text-align: left;
-        }
-        p {
-          text-align: justify;
-        }
-        ul {
-          display: inline-block;
-          margin: 0 auto;
-          text-align: left;
-          margin-bottom: 2.4rem;
-        }
-        div {
-          display: flex;
-          justify-content: center;
-        }
-        button {
-          margin: 0 1.2rem;
-        }
-        p.error {
-          font-weight: bold;
-          font-style: italic;
-          margin: 0;
-          margin-bottom: 2.4rem;
-        }
-      `}</style>
+      <style jsx>{styles}</style>
       <h4>Sparks Stats</h4>
       {Array.isArray(description) ? (
         description.map((paragraph) => <p key={cuid()}>{paragraph}</p>)
