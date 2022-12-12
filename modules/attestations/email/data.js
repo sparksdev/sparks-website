@@ -1,3 +1,6 @@
-export default async function ({ humanId, systemId }) {
-  return { service: 'email', humanId, systemId }
+export default async function (entries) {
+  return { 
+    service: 'email',
+    data: entries,
+  }
 }
