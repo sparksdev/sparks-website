@@ -75,21 +75,21 @@ async function updateStats(req, res) {
     if (data) services[service] = data
   }
 
-  const emailCount = services.email.data.length
-  const websiteCount = services.domain.data.length
-  const twitterFollowers = services.twitter.data.reduce(
+  const emailCount = services.email?.data.length
+  const websiteCount = services.domain?.data.length
+  const twitterFollowers = services.twitter?.data.reduce(
     (t, a) => t + a.public_metrics.followers_count,
     0
   )
-  const twitterFollowing = services.twitter.data.reduce(
+  const twitterFollowing = services.twitter?.data.reduce(
     (t, a) => t + a.public_metrics.following_count,
     0
   )
-  const twitterTweets = services.twitter.data.reduce(
+  const twitterTweets = services.twitter?.data.reduce(
     (t, a) => t + a.public_metrics.tweet_count,
     0
   )
-  const twitterListed = services.twitter.data.reduce(
+  const twitterListed = services.twitter?.data.reduce(
     (t, a) => t + a.public_metrics.listed_count,
     0
   )
