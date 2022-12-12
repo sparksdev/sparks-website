@@ -79,6 +79,7 @@ const custom = {
   ),
   twitter: Icons.Twitter,
   email: Icons.Mail,
+  domain: Icons.Www,
 }
 
 export default function Icon({ id, className = '', title = '', ...props }) {

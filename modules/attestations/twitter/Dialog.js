@@ -71,7 +71,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
       return setError(await result.text())
     }
 
-    const verification = await result.json()
+    const attestation = await result.json()
 
     for (let app of apps) {
       if (user.applications[app.service] && app.addAttestation) {
@@ -95,7 +95,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
 
     closeDialog()
     setWaiting(false)
-    onVerified(verification)
+    onVerified(attestation)
   }
 
   function cancel(e) {

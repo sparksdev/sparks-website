@@ -1,6 +1,6 @@
 export default async function (entries) {
   return {
-    service: 'email',
+    service: 'domain',
     data: entries,
   }
 }

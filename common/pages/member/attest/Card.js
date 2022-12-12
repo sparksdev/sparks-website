@@ -49,7 +49,7 @@ export default function Card({ id, icon, name, description, Dialog }) {
       </h5>
       <p>{description}</p>
       {id !== 'more' && (
-        <button onClick={() => openDialog(<Dialog />)}>Claim {name}</button>
+        <button onClick={() => openDialog(<Dialog />)}>Attest {name}</button>
       )}
     </div>
   )
