@@ -38,36 +38,51 @@ async function removeIdentifiers(req, res) {
 async function updateStats(req, res) {
   const cached = cache.get('report')
   const timestamp = new Date().getTime()
+  const refreshMinutes = 5
 
-  if (cached && timestamp - cached.updatedAt < (60 * 1000)) {
+  if (cached && timestamp - cached.updatedAt < (60 * 1000 * refreshMinutes)) {
     return res.json(cached)
   }
 
-  const records = await prisma.memberStats.findMany()
-  const stats = []
-  for (let record of records) {
-    const { publicKey, service } = record
-    const systemId = decrypt(
+  const encryptedRecords = await prisma.memberStats.findMany()
+  const tmprecord = [ ...encryptedRecords, ...encryptedRecords, ...encryptedRecords, ...encryptedRecords, ...encryptedRecords, ...encryptedRecords ]
+
+  const records = tmprecord
+  .map(record => ({
+    service: record.service,
+    systemId: decrypt(
       record.systemId,
       process.env.STATS_SECRET_KEY,
-      publicKey
-    )
-    const humanId = decrypt(
+      record.publicKey
+    ),
+    humanId: decrypt(
       record.humanId,
       process.env.STATS_SECRET_KEY,
-      publicKey
+      record.publicKey
     )
-    if (!systemId || !humanId) continue
+  }))
+  .filter(({ systemId, humanId }) => {
+    return !!(systemId && humanId)
+  })
+  .reduce((records, record) => {
+    const { service, systemId, humanId } = record
+    records[service] = records[service] || []
+    records[service].push({ systemId, humanId })
+    return records
+  }, {})
+
+  const services = {}
+  for(let service in records) {
     const attestation = getAttestation(service)
-    const data = await attestation.data({ systemId, humanId })
-    if (data) stats.push(data)
+    const data = await attestation.data(records[service])
+    if (data) services[service] = data
   }
-  
-  const emailCount = stats.filter(s => s.service === 'email').length
-  const twitterFollowers = stats.filter(s => s.service === 'twitter').reduce((t, a) => (t + a.data.followers_count), 0)
-  const twitterFollowing = stats.filter(s => s.service === 'twitter').reduce((t, a) => (t + a.data.following_count), 0)
-  const twitterTweets = stats.filter(s => s.service === 'twitter').reduce((t, a) => (t + a.data.tweet_count), 0)
-  const twitterListed = stats.filter(s => s.service === 'twitter').reduce((t, a) => (t + a.data.listed_count), 0)
+
+  const emailCount = services.email.data.length
+  const twitterFollowers = services.twitter.data.reduce((t, a) => (t + a.public_metrics.followers_count), 0)
+  const twitterFollowing = services.twitter.data.reduce((t, a) => (t + a.public_metrics.following_count), 0)
+  const twitterTweets = services.twitter.data.reduce((t, a) => (t + a.public_metrics.tweet_count), 0)
+  const twitterListed = services.twitter.data.reduce((t, a) => (t + a.public_metrics.listed_count), 0)
 
   const report = []
   if (emailCount) report.push(`We have ${emailCount} unique Emails`)
@@ -77,7 +92,6 @@ async function updateStats(req, res) {
   if (twitterListed) report.push(`We are members of ${twitterListed} Twitter lists`)
 
   cache.put('report', { report, updatedAt: new Date().getTime() })
-
   return res.json({ report, updatedAt: new Date().getTime() })
 }
 
