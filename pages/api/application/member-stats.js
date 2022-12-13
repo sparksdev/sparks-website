@@ -80,35 +80,24 @@ async function updateStats(req, res) {
   const websiteCount = services.domain?.data.length
   const smartContractCount = services.smartContract?.data.length
   const twitterCount = services.twitter?.data.length
-  const twitterFollowers = services.twitter?.data.reduce(
-    (t, a) => t + a.public_metrics.followers_count,
-    0
-  )
-  const twitterFollowing = services.twitter?.data.reduce(
-    (t, a) => t + a.public_metrics.following_count,
-    0
-  )
-  const twitterTweets = services.twitter?.data.reduce(
-    (t, a) => t + a.public_metrics.tweet_count,
-    0
-  )
-  const twitterListed = services.twitter?.data.reduce(
-    (t, a) => t + a.public_metrics.listed_count,
-    0
-  )
+  const twitterFollowers = services.twitter?.data.reduce((t, a) => t + a.public_metrics.followers_count,0)
+  const twitterFollowing = services.twitter?.data.reduce((t, a) => t + a.public_metrics.following_count,0)
+  const twitterTweets = services.twitter?.data.reduce((t, a) => t + a.public_metrics.tweet_count,0)
+  const mediumCount = services.medium?.data.length
+  const mediumFollowers = services.medium?.data.reduce((t, a) => t + a.followers,0)
+  const mediumFollowing = services.medium?.data.reduce((t, a) => t + a.following,0)
 
   const report = []
   if (emailCount) report.push(`We have ${emailCount} verified Emails`)
-  if (twitterCount) report.push(`We are ${twitterCount} Twitter accounts`)
   if (websiteCount) report.push(`We own ${websiteCount} Websites`)
   if (smartContractCount) report.push(`We have deployed ${smartContractCount} Smart Contracts`)
-  if (twitterFollowers)
-    report.push(`We are followed by ${twitterFollowers} Twitter users`)
-  if (twitterFollowing)
-    report.push(`We follow ${twitterFollowing} Twitter accounts`)
-  if (twitterTweets) report.push(`We have published ${twitterTweets} Tweets`)
-  if (twitterListed)
-    report.push(`We are members of ${twitterListed} Twitter lists`)
+  if (twitterCount) report.push(`We are ${twitterCount} Twitter accounts`)
+  if (twitterFollowers) report.push(`We are followed by ${twitterFollowers} Twitter users`)
+  if (twitterFollowing) report.push(`We follow ${twitterFollowing} Twitter account`)
+  if (twitterTweets) report.push(`We have published over ${twitterTweets} Tweets`)
+  if (mediumCount) report.push(`We are ${mediumCount} Medium content authors`)
+  if (mediumFollowers) report.push(`We are followed by ${mediumFollowers} Medium readers`)
+  if (mediumFollowing) report.push(`We are follow and read ${mediumFollowing} Medium authos`)
 
   cache.put('report', { report, updatedAt: new Date().getTime() })
   return res.json({ report, updatedAt: new Date().getTime() })
