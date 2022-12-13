@@ -23,9 +23,9 @@ export async function verify({ req, res }) {
   }
 
   const handle = username.trim().replace('@', '')
-  const results = await checkBiography(handle, nonce)
+  const verified = await checkBiography(handle, nonce)
 
-  if (!results) {
+  if (!verified) {
     return res
       .status(403)
       .send("can't find verification - check bio & try again")
@@ -53,6 +53,7 @@ async function checkBiography(username, nonce) {
     verified = bio.includes(nonce)
     await browser.close()
   } catch (error) {
+    console.log(error)
     verified = false
   }
 
