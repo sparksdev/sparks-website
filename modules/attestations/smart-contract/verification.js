@@ -17,7 +17,11 @@ export async function verify({ req, res }) {
   const { body, session } = req
   const { creator, contract, nonce } = session.attest.smartContract
 
-  if (nonce !== body.nonce || contract !== body.contract || creator !== body.creator) {
+  if (
+    nonce !== body.nonce ||
+    contract !== body.contract ||
+    creator !== body.creator
+  ) {
     return res.status(403).send('invalid challenge')
   }
 
@@ -45,7 +49,8 @@ export async function verify({ req, res }) {
 }
 
 async function isContractCreator(contract, creator) {
-  const url = `https://api.etherscan.io/api` +
+  const url =
+    `https://api.etherscan.io/api` +
     `?module=contract&action=getcontractcreation` +
     `&contractaddresses=${contract}` +
     `&apikey=${process.env.ETHERSCAN_API_KEY}`
@@ -56,6 +61,9 @@ async function isContractCreator(contract, creator) {
   }
 
   const json = await result.json()
-  const isOwner = !!json.result?.find(({ contractCreator }) => contractCreator.toLowerCase() === creator.toLowerCase())
+  const isOwner = !!json.result?.find(
+    ({ contractCreator }) =>
+      contractCreator.toLowerCase() === creator.toLowerCase()
+  )
   return isOwner
 }

@@ -49,8 +49,8 @@ export default function Dialog({
   onCancel,
 }) {
   const { closeDialog } = useDialog()
-  const [ waiting, setWaiting ] = useState(false)
-  const [ error, setError ] = useState(null)
+  const [waiting, setWaiting] = useState(false)
+  const [error, setError] = useState(null)
   const { sign } = useMetamask()
   const router = useRouter()
 

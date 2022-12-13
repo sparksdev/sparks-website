@@ -145,12 +145,13 @@ export default function Dialog({ onVerified, onCancel, user }) {
       {challenge ? (
         <form onSubmit={verify}>
           <h4>Confirm Challenge</h4>
-          <p>Add the following challenge in your medium biography description. When ready click attest to verify it. Once attested you can delete it.</p>
+          <p>
+            Add the following challenge in your medium biography description.
+            When ready click attest to verify it. Once attested you can delete
+            it.
+          </p>
           <pre>{challenge}</pre>
-          <Link
-            href={`https://medium.com/${username}/about`}
-            target="_blank"
-          >
+          <Link href={`https://medium.com/${username}/about`} target="_blank">
             open your biorgraphy
           </Link>
           {error ? <p className="error">{error}</p> : <></>}
@@ -167,8 +168,9 @@ export default function Dialog({ onVerified, onCancel, user }) {
         <form onSubmit={getChallenge}>
           <h4>Set Medium Challenge</h4>
           <p>
-            Enter your Medium username to recieve a unique code to confirm ownership.
-            Once confirmed it will be encrypted & stored with keys only you control.
+            Enter your Medium username to recieve a unique code to confirm
+            ownership. Once confirmed it will be encrypted & stored with keys
+            only you control.
           </p>
           <input
             value={username}

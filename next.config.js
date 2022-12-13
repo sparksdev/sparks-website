@@ -6,7 +6,7 @@ const nextConfig = {
     STATS_PUBLIC_KEY: process.env.STATS_PUBLIC_KEY,
   },
   webpack: (config) => {
-    config.resolve.fallback = { 
+    config.resolve.fallback = {
       fs: false,
       net: false,
       tls: false,

@@ -49,7 +49,9 @@ export default function Dialog({ onVerified, onCancel, user }) {
     setError(null)
     setWaiting(true)
 
-    let result = await fetch(`/api/attestation/smartContract?contract=${contract}&creator=${address}`)
+    let result = await fetch(
+      `/api/attestation/smartContract?contract=${contract}&creator=${address}`
+    )
     if (!result.ok) {
       setWaiting(false)
       return setError(await result.text())
@@ -66,7 +68,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
         signature,
         creator: address,
         contract,
-      })
+      }),
     })
 
     if (!result.ok) {
@@ -131,32 +133,33 @@ export default function Dialog({ onVerified, onCancel, user }) {
   return (
     <>
       <style jsx>{styles}</style>
-        <form onSubmit={handleSubmit} onReset={handleReset}>
-          <h4>Generate Challenge</h4>
-          <p>
-            Enter your contract address to recieve a signature challenge to confirm ownership.
-            Once confirmed it will be encrypted & stored with keys only you control.
-          </p>
-          <span>
-            <label>Contract Address</label>
-            <input
-              name="smartContract"
-              pattern="[a-zA-Z0-9]{42}"
-              value={contract}
-              onChange={e => setContract(e.target.value)}
-              required
-            />
-          </span>
-          {error ? <p className="error">{error}</p> : <></>}
-          <div>
-            <button disabled={waiting} type="reset">
-              cancel
-            </button>
-            <button disabled={waiting} type="submit">
-              verify
-            </button>
-          </div>
-        </form>
+      <form onSubmit={handleSubmit} onReset={handleReset}>
+        <h4>Generate Challenge</h4>
+        <p>
+          Enter your contract address to recieve a signature challenge to
+          confirm ownership. Once confirmed it will be encrypted & stored with
+          keys only you control.
+        </p>
+        <span>
+          <label>Contract Address</label>
+          <input
+            name="smartContract"
+            pattern="[a-zA-Z0-9]{42}"
+            value={contract}
+            onChange={(e) => setContract(e.target.value)}
+            required
+          />
+        </span>
+        {error ? <p className="error">{error}</p> : <></>}
+        <div>
+          <button disabled={waiting} type="reset">
+            cancel
+          </button>
+          <button disabled={waiting} type="submit">
+            verify
+          </button>
+        </div>
+      </form>
     </>
   )
 }

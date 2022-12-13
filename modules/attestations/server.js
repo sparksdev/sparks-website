@@ -4,12 +4,18 @@ import * as domain from './domain/verification'
 import * as medium from './medium/verification'
 import * as smartContract from './smart-contract/verification'
 
+import emailData from './email/data'
+import twitterData from './twitter/data'
+import domainData from './domain/data'
+import mediumData from './medium/data'
+import smartContractData from './smart-contract/data'
+
 const attestations = {
-  email, 
-  domain,
-  twitter, 
-  medium,
-  smartContract,
+  email: { ...email, data: emailData },
+  domain: { ...domain, data: domainData },
+  twitter: { ...twitter, data: twitterData },
+  medium: { ...medium, data: mediumData },
+  smartContract: { ...smartContract, data: smartContractData },
 }
 
 export function getAttestation(service) {

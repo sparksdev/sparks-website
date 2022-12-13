@@ -49,7 +49,10 @@ async function checkBiography(username, nonce) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
     await page.goto(url, { waitUntil: 'domcontentloaded' })
-    const bio = await page.$eval('.pw-post-body-paragraph', (bio) => bio.textContent);
+    const bio = await page.$eval(
+      '.pw-post-body-paragraph',
+      (bio) => bio.textContent
+    )
     verified = bio.includes(nonce)
     await browser.close()
   } catch (error) {
