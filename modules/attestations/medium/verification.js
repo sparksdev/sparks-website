@@ -8,7 +8,7 @@ export async function challenge({ req, res, nonce }) {
   if (!username) {
     return res.status(403).send('invalid username')
   }
-  const challenge = `#SPARKS Verification ${nonce}`
+  const challenge = `SPARKS Verification ${nonce}`
   session.attest = session.attest || {}
   session.attest.medium = { nonce, username }
   await session.save()
@@ -49,10 +49,7 @@ async function checkBiography(username, nonce) {
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
     await page.goto(url, { waitUntil: 'domcontentloaded' })
-    const bio = await page.$eval(
-      '.pw-post-body-paragraph',
-      (bio) => bio.textContent
-    )
+    const bio = await page.$eval('.pw-post-body-paragraph', (element) => element.textContent)
     verified = bio.includes(nonce)
     await browser.close()
   } catch (error) {
