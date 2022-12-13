@@ -79,6 +79,7 @@ const custom = {
   ),
   twitter: Icons.Twitter,
   email: Icons.Mail,
+  medium: Icons.Medium,
   domain: Icons.Www,
   smartContract: Icons.StatsReport,
 }

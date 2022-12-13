@@ -1,5 +1,5 @@
 import { withSession } from '@utilities/session/server-routes'
-import { getAttestation } from '@modules/attestations'
+import { getAttestation } from '@modules/attestations/server'
 import { prisma } from '@utilities/database'
 import * as utils from '@utilities/encryption/utilities'
 

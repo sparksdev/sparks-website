@@ -35,6 +35,7 @@ async function removeIdentifiers(req, res) {
 }
 
 async function updateStats(req, res) {
+  cache.clear()
   const cached = cache.get('report')
   const timestamp = new Date().getTime()
   const refreshMinutes = 5
@@ -78,6 +79,7 @@ async function updateStats(req, res) {
   const emailCount = services.email?.data.length
   const websiteCount = services.domain?.data.length
   const smartContractCount = services.smartContract?.data.length
+  const twitterCount = services.twitter?.data.length
   const twitterFollowers = services.twitter?.data.reduce(
     (t, a) => t + a.public_metrics.followers_count,
     0
@@ -97,6 +99,7 @@ async function updateStats(req, res) {
 
   const report = []
   if (emailCount) report.push(`We have ${emailCount} verified Emails`)
+  if (twitterCount) report.push(`We are ${twitterCount} Twitter accounts`)
   if (websiteCount) report.push(`We own ${websiteCount} Websites`)
   if (smartContractCount) report.push(`We have deployed ${smartContractCount} Smart Contracts`)
   if (twitterFollowers)
