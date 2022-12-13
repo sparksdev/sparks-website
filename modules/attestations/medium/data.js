@@ -1,48 +1,24 @@
-import puppeteer from 'puppeteer'
+import cuid from "cuid"
+import { CheerioCrawler } from "crawlee"
 
 export default async function (entries) {
   let data = []
+  const crawler = new CheerioCrawler({
+    async requestHandler({ request, response, body, contentType, $ }) {
+      const userData = {}
+      const username = $('meta[property="profile:username"]').attr('content')
+      if (!username) return
+      userData.humanId = username
+      userData.systemId = username
+      userData.followers = parseInt($('.pw-follower-count a').first().text().replace(/\s*Followers\s*/, '') || 0)
+      userData.following = parseInt($('.pw-follower-count + span + button').first().text().replace(/\s*Following\s*/, '') || 0)
+      userData.first_name = $('meta[property="profile:first_name"]').attr('content') || ''
+      userData.last_name = $('meta[property="profile:last_name"]').attr('content') || ''
+      data.push(userData)
+    },
+    async errorHandler() {}
+  });
 
-  for (let user of entries) {
-    try {
-      const url = `https://medium.com/@${user.humanId}/about`
-      const browser = await puppeteer.launch()
-      const page = await browser.newPage()
-      await page.goto(url, { waitUntil: 'domcontentloaded' })
-      const followers = await page.$eval('.pw-follower-count a', (element) =>
-        element.textContent.replace(/\s*Followers\s*/, '')
-      )
-      const following = await page.$eval(
-        '.pw-follower-count + span + button',
-        (element) => element.textContent.replace(/\s*Following\s*/, '')
-      )
-      const first_name = await page.$eval(
-        'meta[property="profile:first_name"]',
-        (element) => element.getAttribute('content')
-      )
-      const last_name = await page.$eval(
-        'meta[property="profile:last_name"]',
-        (element) => element.getAttribute('content')
-      )
-
-      data.push({
-        ...user,
-        followers: parseInt(followers),
-        following: parseInt(following),
-        first_name,
-        last_name,
-      })
-      await browser.close()
-    } catch (error) {
-      console.log(error)
-      data.push({
-        ...user,
-        followers: 0,
-        following: 0,
-        first_name: 'n/a',
-        last_name: 'n/a',
-      })
-    }
-  }
+  await crawler.run(entries.map(({ humanId }) => `https://medium.com/@${humanId}/about?cache=${cuid()}`));
   return { service: 'medium', data }
 }

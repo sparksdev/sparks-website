@@ -74,7 +74,7 @@ async function updateStats(req, res) {
     const data = await attestation.data(records[service])
     if (data) services[service] = data
   }
- 
+
   const emailCount = services.email?.data.length
   const websiteCount = services.domain?.data.length
   const smartContractCount = services.smartContract?.data.length
@@ -117,10 +117,11 @@ async function updateStats(req, res) {
   if (mediumFollowers)
     report.push(`We are followed by ${mediumFollowers} Medium readers`)
   if (mediumFollowing)
-    report.push(`We are follow and read ${mediumFollowing} Medium authos`)
+    report.push(`We are follow and read ${mediumFollowing} Medium authors`)
 
   cache.put('report', { report, updatedAt: new Date().getTime() })
-  return res.json({ report, updatedAt: new Date().getTime() })
+  res.json({ report, updatedAt: new Date().getTime() })
+
 }
 
 async function handler(req, res) {

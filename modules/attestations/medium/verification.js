@@ -1,4 +1,5 @@
-import puppeteer from 'puppeteer'
+import { CheerioCrawler } from 'crawlee'
+import cuid from 'cuid'
 
 export async function challenge({ req, res, nonce }) {
   const {
@@ -39,23 +40,20 @@ export async function verify({ req, res }) {
   })
 }
 
-// try for one minute then give up
 async function checkBiography(username, nonce) {
-  // todo scrape the about page and return verified
-  let verified = false
-
-  try {
-    const url = `https://medium.com/@${username}/about`
-    const browser = await puppeteer.launch()
-    const page = await browser.newPage()
-    await page.goto(url, { waitUntil: 'domcontentloaded' })
-    const bio = await page.$eval('.pw-post-body-paragraph', (element) => element.textContent)
-    verified = bio.includes(nonce)
-    await browser.close()
-  } catch (error) {
-    console.log(error)
-    verified = false
-  }
-
-  return verified
+  return new Promise(async (resolve, reject) => {
+    let verified = false
+    const crawler = new CheerioCrawler({
+      async requestHandler({ request, response, body, contentType, $ }) {
+        verified = $('.pw-post-body-paragraph').text().includes(nonce)
+      },
+      async errorHandler() {
+        verified = false
+      }
+    });
+    await crawler.run([
+      `https://medium.com/@${username}/about?cache=${cuid()}`,
+    ]);
+    resolve(verified)
+  })
 }
