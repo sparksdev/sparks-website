@@ -117,7 +117,7 @@ async function updateStats(req, res) {
   if (mediumFollowers)
     report.push(`We are followed by ${mediumFollowers} Medium readers`)
   if (mediumFollowing)
-    report.push(`We are follow and read ${mediumFollowing} Medium authors`)
+    report.push(`We follow and read ${mediumFollowing} Medium authors`)
 
   cache.put('report', { report, updatedAt: new Date().getTime() })
   res.json({ report, updatedAt: new Date().getTime() })
