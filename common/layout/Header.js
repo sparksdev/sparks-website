@@ -7,6 +7,8 @@ import useMetamask from '@hooks/metamask'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import css from 'styled-jsx/css'
+import { useEffect } from 'react'
+import { hash } from '@utilities/encryption/utilities'
 
 const styles = css`
   header {
@@ -63,6 +65,16 @@ export default function Header({ userId }) {
   const { openDialog, closeDialog } = useDialog()
   const router = useRouter()
   const { theme, setTheme } = useTheme()
+
+  useEffect(() => {
+    if (!active) return
+    if (!address && active) return connect()
+    const currentUser = hash(address)
+    if (!!userId && userId !== currentUser) {
+      fetch('/api/session/logout')
+      router.replace('/')
+    }
+  }, [])
 
   async function register() {
     openDialog(
