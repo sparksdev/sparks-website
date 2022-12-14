@@ -11,6 +11,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@octokit/rest": "^19.0.5",
     "@prisma/client": "^4.7.1",
     "@sendgrid/mail": "^7.7.0",
     "@usedapp/core": "^1.2.2",

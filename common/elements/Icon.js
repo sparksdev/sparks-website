@@ -79,6 +79,7 @@ const custom = {
   ),
   twitter: Icons.Twitter,
   email: Icons.Mail,
+  github: Icons.GitHub,
   medium: Icons.Medium,
   domain: Icons.Www,
   smartContract: Icons.StatsReport,

@@ -7,7 +7,7 @@ export default async function (entries) {
     async requestHandler({ request, response, body, contentType, $ }) {
       const userData = {}
       const username = $('meta[property="profile:username"]').attr('content')
-      if (!username) return
+      if (!username || entries.find(e => e.humanId === username)) return
       userData.humanId = username
       userData.systemId = username
       userData.followers = parseInt($('.pw-follower-count a').first().text().replace(/\s*Followers\s*/, '') || 0)
