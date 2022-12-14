@@ -9,9 +9,11 @@ import Content from '@pages/member/Content'
 import CardLayout from '@pages/member/CardLayout'
 import Card from '@pages/member/profile/Card'
 import styles from '@pages/member/profile/styles'
+import useMetamask from '@hooks/metamask'
 
 export default function Member({ user, session: { userId } }) {
   const { attestations = [] } = user
+  const { address } = useMetamask()
   const router = useRouter()
 
   return (
@@ -21,7 +23,7 @@ export default function Member({ user, session: { userId } }) {
       <Header userId={userId} />
       <Nav />
       <Content>
-        <Identicon address={user.address} />
+        <Identicon address={address} />
         <small
           onClick={async () => {
             if (
@@ -36,7 +38,7 @@ export default function Member({ user, session: { userId } }) {
         >
           delete account
         </small>
-        <h5>{user.address}</h5>
+        <h5>{address}</h5>
         <CardLayout>
           {attestations.map((attestation, index) => (
             <Card
