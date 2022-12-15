@@ -29,19 +29,19 @@ export default function Nav() {
     <nav>
       <style jsx>{styles}</style>
       <Link
-        className={router.pathname === '/member/profile' ? 'active' : ''}
+        className={router.pathname.startsWith('/member/profile') ? 'active' : ''}
         href="/member/profile"
       >
         Profile
       </Link>
       <Link
-        className={router.pathname === '/member/attest' ? 'active' : ''}
+        className={router.pathname.startsWith('/member/attest') ? 'active' : ''}
         href="/member/attest"
       >
         Attest
       </Link>
       <Link
-        className={router.pathname === '/member/apps' ? 'active' : ''}
+        className={router.pathname.startsWith('/member/apps') ? 'active' : ''}
         href="/member/apps"
       >
         Apps

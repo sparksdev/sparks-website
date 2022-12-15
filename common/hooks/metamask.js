@@ -18,11 +18,15 @@ export default function useMetamask() {
     return address === address
   }
 
+  async function connect() {
+    await activateBrowserWallet()
+  }
+
   return {
     address: account,
     active: active,
     error: error,
-    connect: activateBrowserWallet,
+    connect,
     disconnect: deactivate,
     sign: sign,
     verify: verify,

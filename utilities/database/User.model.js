@@ -29,7 +29,7 @@ export default class User {
 
     if (!user) return undefined
 
-    user.applications = {
+    user.apps = {
       memberStats: user.memberStats.length,
     }
 

@@ -4,7 +4,7 @@ import useMetamask from '@hooks/metamask'
 import { useState } from 'react'
 import { useDialog } from '@providers/dialog'
 import { keyPairFromSignature, hash } from '@utilities/encryption/utilities'
-import apps from '@modules/applications'
+import apps from '@modules/apps'
 
 export default function Dialog({ onVerified, onCancel, user }) {
   const { sign } = useMetamask()
@@ -19,7 +19,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
     setError(null)
     setWaiting(true)
     const nonce = e.target.elements.nonce.value
-    let result = await fetch('/api/attestation/email', {
+    let result = await fetch('/api/attestations/email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nonce, email }),
@@ -39,7 +39,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
       humanId: secretBox.encrypt(humanId, keyPair.secretKey),
     }
 
-    result = await fetch('/api/attestation/email', {
+    result = await fetch('/api/attestations/email', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(encrypted),
@@ -52,7 +52,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
     const attestation = await result.json()
 
     for (let app of apps) {
-      if (user.applications[app.service] && app.addAttestation) {
+      if (user.apps[app.service] && app.addAttestation) {
         app.addAttestation({
           service: 'email',
           humanId: sharedBox.encrypt(
@@ -81,7 +81,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
     setError(null)
     setWaiting(true)
     const email = e.target.elements.email.value
-    const result = await fetch(`/api/attestation/email?email=${email}`)
+    const result = await fetch(`/api/attestations/email?email=${email}`)
     if (!result.ok) {
       setWaiting(false)
       return setError(await result.text())

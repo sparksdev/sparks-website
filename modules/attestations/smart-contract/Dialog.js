@@ -4,7 +4,7 @@ import useMetamask from '@hooks/metamask'
 import { useState } from 'react'
 import { useDialog } from '@providers/dialog'
 import { keyPairFromSignature, hash } from '@utilities/encryption/utilities'
-import apps from '@modules/applications'
+import apps from '@modules/apps'
 import css from 'styled-jsx/css'
 
 const styles = css`
@@ -50,7 +50,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
     setWaiting(true)
 
     let result = await fetch(
-      `/api/attestation/smartContract?contract=${contract}&creator=${address}`
+      `/api/attestations/smartContract?contract=${contract}&creator=${address}`
     )
     if (!result.ok) {
       setWaiting(false)
@@ -60,7 +60,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
     const { nonce } = await result.json()
     let signature = await sign(nonce)
 
-    result = await fetch(`/api/attestation/smartContract`, {
+    result = await fetch(`/api/attestations/smartContract`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -85,7 +85,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
       humanId: secretBox.encrypt(humanId, keyPair.secretKey),
     }
 
-    result = await fetch('/api/attestation/smartContract', {
+    result = await fetch('/api/attestations/smartContract', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(encrypted),
@@ -98,7 +98,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
     const attestation = await result.json()
 
     for (let app of apps) {
-      if (user.applications[app.service] && app.addAttestation) {
+      if (user.apps[app.service] && app.addAttestation) {
         app.addAttestation({
           service: 'smartContract',
           humanId: sharedBox.encrypt(

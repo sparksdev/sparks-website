@@ -5,9 +5,9 @@ export default function MemberStats() {
   const [report, setReport] = useState(null)
 
   async function getReport() {
-    const result = await fetch('/api/application/member-stats')
+    const result = await fetch('/api/apps/memberStats?report=1')
     if (!result.ok) return
-    const { report, updatedAt } = await result.json()
+    const { report } = await result.json()
     if (report.length) {
       setReport([
         'We are SPARKS',

@@ -1,6 +1,7 @@
 import Icon from '@elements/Icon'
 import css from 'styled-jsx/css'
-import { useRouter } from 'next/router'
+import Case from 'case'
+import cuid from 'cuid'
 
 const styles = css`
   div {
@@ -14,9 +15,6 @@ const styles = css`
     flex: 1;
     min-width: 40rem;
   }
-  .fullWidth {
-    flex: 100%;
-  }
   div h5 {
     margin: 0;
     display: flex;
@@ -26,36 +24,28 @@ const styles = css`
   div h5 :global(.icon) {
     margin-right: 1.2rem;
   }
-  div p {
-    font-style: normal;
-    flex-grow: 1;
-    margin: 1.6rem auto;
-    text-align: justify;
-  }
-  div :global(button) {
-    width: auto;
-    margin: 0 auto;
+  pre span {
+    font: inherit;
   }
 `
 
 export default function Card({
   name,
   icon,
-  service,
-  introduction,
+  data,
 }) {
-  const router = useRouter()
   return (
-    <div className={service === 'more' ? 'fullWidth' : ''}>
+    <div>
       <style jsx>{styles}</style>
       <h5>
         <Icon id={icon} size={24} />
         {name}
       </h5>
-      <p>{introduction}</p>
-      {service !== 'more' && (
-        <button onClick={() => router.push(`/member/apps/${service}`)}>open app</button>
-      )}
+      <pre>
+        {Object.keys(data).map(key => {
+          return <span key={cuid()}>{Case.capital(key)} - {data[key]}<br/></span>
+        })}
+      </pre>
     </div>
   )
 }

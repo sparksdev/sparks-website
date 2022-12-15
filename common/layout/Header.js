@@ -68,13 +68,15 @@ export default function Header({ userId }) {
 
   useEffect(() => {
     if (!active) return
-    if (!address && active) return connect()
-    const currentUser = hash(address)
-    if (!!userId && userId !== currentUser) {
-      fetch('/api/session/logout')
-      router.replace('/')
+    const handleLoggedOut = async () => {
+      const currentUser = hash(address || '')
+      if (!address || !active || (!!userId && userId !== currentUser)) {
+        fetch('/api/session/logout')
+          .then(() => router.replace('/'))
+      }
     }
-  }, [])
+    handleLoggedOut()
+  }, [ active, address ])
 
   async function register() {
     openDialog(

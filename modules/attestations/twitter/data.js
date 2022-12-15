@@ -23,5 +23,5 @@ export default async function (entries) {
     json.data.forEach((user) => data.push(user))
   }
 
-  return { service: 'twitter', data }
+  return data
 }

@@ -41,7 +41,7 @@ const styles = css`
   }
 `
 
-export default function Dialog({
+export default function SignUp({
   user,
   description,
   enable,
@@ -100,7 +100,7 @@ export default function Dialog({
         <button disabled={waiting} onClick={cancel}>
           cancel
         </button>
-        {user.applications.memberStats ? (
+        {user.apps.memberStats ? (
           <button disabled={waiting} onClick={_disable}>
             disable
           </button>

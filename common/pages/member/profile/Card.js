@@ -5,7 +5,7 @@ import useMetamask from '@hooks/metamask'
 import { hash, keyPairFromSignature } from '@utilities/encryption/utilities'
 import { decrypt } from '@utilities/encryption/secret-box'
 import { useRouter } from 'next/router'
-import apps, { getApplication } from '@modules/applications'
+import apps, { getApp } from '@modules/apps'
 
 const styles = css`
   div {
@@ -65,19 +65,19 @@ export default function CardProfile({
   async function remove() {
     setWaiting(true)
     const result = await fetch(
-      `/api/attestation/${service}?attestationId=${attestationId}`,
+      `/api/attestations/${service}?attestationId=${attestationId}`,
       { method: 'DELETE' }
     )
     if (!result.ok) return
     const json = await result.json()
     setWaiting(false)
 
-    const hasApp = apps.find((app) => user.applications[app.service])
+    const hasApp = apps.find((app) => user.apps[app.service])
     if (hasApp && !revealed) {
       const data = await reveal()
       const idsHash = hash(data.systemId + data.humanId)
       for (let app of apps) {
-        const userApp = getApplication(app.service)
+        const userApp = getApp(app.service)
         if (userApp && app.removeAttestation) {
           app.removeAttestation({ hash: idsHash })
         }

@@ -4,7 +4,7 @@ import Footer from '@layout/Footer'
 import { withSessionRequired } from '@utilities/session/client-routes'
 import Nav from '@pages/member/Navigation'
 import Content from '@pages/member/Content'
-import applications from '@modules/applications'
+import apps from '@modules/apps'
 import Card from '@pages/member/apps/Card'
 import CardLayout from '@pages/member/CardLayout'
 import PageDesc from '@pages/member/PageDesc'
@@ -21,13 +21,11 @@ export default function Member({ user, session: { userId } }) {
           SPARKS ecosystem as well as third parties.
         </PageDesc>
         <CardLayout>
-          {applications.map(({ Dialog, ...app }, index) => {
+          {apps.map(({ Dialog, ...app }, index) => {
             return (
               <Card
                 key={`${app.id}-${index}`}
                 {...app}
-                user={user}
-                Dialog={() => <Dialog user={user} {...app} />}
               />
             )
           })}

@@ -5,8 +5,7 @@ export async function addAttestation({
   humanId,
   systemId,
 }) {
-  // save this to db { publicKey, data: [{ service, hash, systemId, humanId }]}
-  const result = await fetch('/api/application/member-stats', {
+  const result = await fetch('/api/apps/memberStats', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -26,7 +25,7 @@ export async function addAttestation({
 
 export async function removeAttestation({ hash }) {
   const result = await fetch(
-    `/api/application/member-stats?hash=${encodeURIComponent(hash)}`,
+    `/api/apps/memberStats?hash=${encodeURIComponent(hash)}`,
     {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },

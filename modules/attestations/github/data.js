@@ -22,7 +22,7 @@ export default async function (entries) {
     })
   }
 
-  return { service: 'medium', data }
+  return data
 }
 
 

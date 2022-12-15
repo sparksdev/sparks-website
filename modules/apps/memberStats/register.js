@@ -34,7 +34,7 @@ export async function enable({ user, sign }) {
     })
   }
 
-  const result = await fetch('/api/application/member-stats', {
+  const result = await fetch('/api/apps/memberStats', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ publicKey: keyPair.publicKey, data }),
@@ -44,7 +44,7 @@ export async function enable({ user, sign }) {
 }
 
 export async function disable() {
-  const result = await fetch('/api/application/member-stats', {
+  const result = await fetch('/api/apps/memberStats', {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
   })

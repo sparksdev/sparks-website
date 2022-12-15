@@ -1,7 +1,8 @@
 import metadata from './metadata'
 import { enable, disable } from './register'
 import { addAttestation, removeAttestation } from './update'
-import Dialog from './Dialog'
+import Signup from './Signup'
+import App from './App'
 
 export default {
   ...metadata,
@@ -9,5 +10,6 @@ export default {
   disable,
   addAttestation,
   removeAttestation,
-  Dialog,
+  Signup,
+  App,
 }

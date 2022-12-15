@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDialog } from '@providers/dialog'
 import Link from 'next/link'
 import useMetamask from '@hooks/metamask'
-import apps from '@modules/applications'
+import apps from '@modules/apps'
 import { hash, keyPairFromSignature } from '@utilities/encryption/utilities'
 import secretBox from '@utilities/encryption/secret-box'
 import sharedBox from '@utilities/encryption/shared-box'
@@ -21,7 +21,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
     setError(null)
     setWaiting(true)
     const result = await fetch(
-      `/api/attestation/medium?username=${username.replace('@', '')}`
+      `/api/attestations/medium?username=${username.replace('@', '')}`
     )
     if (!result.ok) {
       setWaiting(false)
@@ -41,7 +41,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
 
     setWaiting(true)
 
-    result = await fetch('/api/attestation/medium', {
+    result = await fetch('/api/attestations/medium', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: username.replace('@', ''), nonce }),
@@ -60,7 +60,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
       humanId: secretBox.encrypt(humanId, keyPair.secretKey),
     }
 
-    result = await fetch('/api/attestation/medium', {
+    result = await fetch('/api/attestations/medium', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(encrypted),
@@ -74,7 +74,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
     const attestation = await result.json()
 
     for (let app of apps) {
-      if (user.applications[app.service] && app.addAttestation) {
+      if (user.apps[app.service] && app.addAttestation) {
         app.addAttestation({
           service: 'medium',
           humanId: sharedBox.encrypt(

@@ -20,5 +20,5 @@ export default async function (entries) {
   });
 
   await crawler.run(entries.map(({ humanId }) => `https://medium.com/@${humanId}/about?cache=${cuid()}`));
-  return { service: 'medium', data }
+  return data
 }

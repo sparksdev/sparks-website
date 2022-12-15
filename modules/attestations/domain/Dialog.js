@@ -4,7 +4,7 @@ import useMetamask from '@hooks/metamask'
 import { useState } from 'react'
 import { useDialog } from '@providers/dialog'
 import { keyPairFromSignature, hash } from '@utilities/encryption/utilities'
-import apps from '@modules/applications'
+import apps from '@modules/apps'
 
 export default function Dialog({ onVerified, onCancel, user }) {
   const { sign } = useMetamask()
@@ -20,7 +20,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
     setError(null)
     setWaiting(true)
 
-    let result = await fetch('/api/attestation/domain', {
+    let result = await fetch('/api/attestations/domain', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nonce, domain }),
@@ -40,7 +40,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
       humanId: secretBox.encrypt(humanId, keyPair.secretKey),
     }
 
-    result = await fetch('/api/attestation/domain', {
+    result = await fetch('/api/attestations/domain', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(encrypted),
@@ -53,7 +53,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
     const attestation = await result.json()
 
     for (let app of apps) {
-      if (user.applications[app.service] && app.addAttestation) {
+      if (user.apps[app.service] && app.addAttestation) {
         app.addAttestation({
           service: 'domain',
           humanId: sharedBox.encrypt(
@@ -82,7 +82,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
     setError(null)
     setWaiting(true)
     const domain = e.target.elements.domain.value
-    const result = await fetch(`/api/attestation/domain?domain=${domain}`)
+    const result = await fetch(`/api/attestations/domain?domain=${domain}`)
     if (!result.ok) {
       setWaiting(false)
       return setError(await result.text())
