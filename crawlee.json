@@ -1,3 +1,4 @@
 {
-  "persistStorage": false
+  "persistStorage": false,
+  "logLevel": "ERROR"
 }
