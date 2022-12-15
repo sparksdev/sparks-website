@@ -27,7 +27,7 @@ async function removeIdentifiers(req, res) {
   const hash = req.query.hash ? decodeURIComponent(req.query.hash) : null
   let result
   if (hash) {
-    result = await prisma.memberStats.delete({ where: { hash } })
+    result = await prisma.memberStats.delete({ where: { userId, hash } })
   } else {
     result = await prisma.memberStats.deleteMany({ where: { userId } })
   }
