@@ -25,13 +25,14 @@ model Attestation {
 
 model MemberStats {
   memberStatsId String @id @default(cuid())
-  hash String @unique
+  hash String
   humanId String
   systemId String
   publicKey String
   service Service
   userId String
   user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  @@unique([userId, hash])
 }
 
 enum Service {

@@ -12,7 +12,7 @@ async function addIdentifiers(req, res) {
     data.map((entry) => {
       const { hash } = entry
       return prisma.memberStats.upsert({
-        where: { hash },
+        where: { userId_hash: { userId, hash }},
         update: { ...entry, userId, publicKey },
         create: { ...entry, userId, publicKey },
       })
@@ -27,7 +27,7 @@ async function removeIdentifiers(req, res) {
   const hash = req.query.hash ? decodeURIComponent(req.query.hash) : null
   let result
   if (hash) {
-    result = await prisma.memberStats.delete({ where: { userId, hash } })
+    result = await prisma.memberStats.delete({ where: { userId_hash: { userId, hash }} })
   } else {
     result = await prisma.memberStats.deleteMany({ where: { userId } })
   }
@@ -44,7 +44,13 @@ async function updateStats(req, res) {
     return req.query.data ? res.json(cachedData) : res.json(cachedReport)
   }
 
-  const encryptedRecords = await prisma.memberStats.findMany()
+  // get all records and keep only unique hashes for stats
+  let encryptedRecords = await prisma.memberStats.findMany()
+  encryptedRecords = [...new Map(encryptedRecords.map(record => {
+    [ record[hash], record ]
+  })).values()]
+
+
   const records = encryptedRecords
     .map((record) => ({
       service: record.service,
