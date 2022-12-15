@@ -92,6 +92,7 @@ async function updateStats(req, res) {
   const githubPublicGists = services.github?.data.reduce((t, a) => t + a.public_gists,0)
   const githubFollowers = services.github?.data.reduce((t, a) => t + a.followers,0)
   const githubFollowing = services.github?.data.reduce((t, a) => t + a.following,0)
+  const githubContributions = services.github?.data.reduce((t, a) => t + a.contributions,0)
 
   const report = []
   if (emailCount) report.push(`We have ${emailCount} verified Emails`)
@@ -101,6 +102,7 @@ async function updateStats(req, res) {
   if (githubPublicGists) report.push(`We have published ${githubPublicGists} public GitHub gists`)
   if (githubFollowers) report.push(`We are followed by ${githubFollowers} fellow GitHub developers`)
   if (githubFollowing) report.push(`We follow ${githubFollowing} other GitHub accounts`)
+  if (githubContributions) report.push(`We have made ${githubContributions} GitHub repo contributions`)
   if (smartContractCount) report.push(`We have deployed ${smartContractCount} Smart Contracts`)
   if (twitterCount) report.push(`We are ${twitterCount} Twitter accounts`)
   if (twitterFollowers) report.push(`We are followed by ${twitterFollowers} Twitter users`)
