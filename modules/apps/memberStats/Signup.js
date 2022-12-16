@@ -1,30 +1,16 @@
-import { useDialog } from '@providers/dialog'
-import cuid from 'cuid'
 import { useState } from 'react'
 import useMetamask from '@hooks/metamask'
 import { useRouter } from 'next/router'
 import css from 'styled-jsx/css'
+import { enable } from './register'
 
 const styles = css`
   form {
     text-align: center;
-  }
-  h4 {
-    margin-top: 1.2rem;
-    text-align: center;
-  }
-  span {
-    display: inline-block;
-    text-align: left;
+    max-width: 80rem;
   }
   p {
     text-align: justify;
-  }
-  ul {
-    display: inline-block;
-    margin: 0 auto;
-    text-align: left;
-    margin-bottom: 2.4rem;
   }
   div {
     display: flex;
@@ -41,74 +27,30 @@ const styles = css`
   }
 `
 
-export default function SignUp({
-  user,
-  description,
-  enable,
-  disable,
-  onCancel,
-}) {
-  const { closeDialog } = useDialog()
+export default function SignUp({ user }) {
   const [waiting, setWaiting] = useState(false)
   const [error, setError] = useState(null)
   const { sign } = useMetamask()
   const router = useRouter()
 
-  function cancel(event) {
-    if (event) event.preventDefault()
-    setError(null)
-    setWaiting(false)
-    closeDialog()
-    if (onCancel) onCancel()
-  }
-
   async function _enable(event) {
     event.preventDefault()
-    if (!enable) {
-      throw Error('missing app callback')
-    }
     setWaiting(true)
-    await enable({ user, sign })
+    const ok = await enable({ user, sign })
     setWaiting(false)
-    closeDialog()
-    router.replace(router.asPath)
-  }
-
-  async function _disable(event) {
-    if (event) event.preventDefault()
-    if (!disable) {
-      throw Error('missing app callback')
-    }
-    setWaiting(true)
-    await disable()
-    setWaiting(false)
-    closeDialog()
-    router.replace(router.asPath)
+    if (!ok) setError('failed to enable try again')
+    else router.replace(router.asPath)
   }
 
   return (
     <form onSubmit={enable}>
       <style jsx>{styles}</style>
       <h4>Sparks Stats</h4>
-      {Array.isArray(description) ? (
-        description.map((paragraph) => <p key={cuid()}>{paragraph}</p>)
-      ) : (
-        <p>{description}</p>
-      )}
+      <p>SPARKS wants to encrypt your identifiers using a shared key & store them to compute aggregate stats. Individual data is only be used to calculate totals & will not be stored individually.</p>
+      <p>We'll use these stats to signal the strength of the community & seek opportunities to bring value to the ecosystem.</p>
       {error ? <p className="error">{error}</p> : <></>}
       <div>
-        <button disabled={waiting} onClick={cancel}>
-          cancel
-        </button>
-        {user.apps.memberStats ? (
-          <button disabled={waiting} onClick={_disable}>
-            disable
-          </button>
-        ) : (
-          <button disabled={waiting} onClick={_enable}>
-            enable
-          </button>
-        )}
+        <button disabled={waiting} onClick={_enable}>enable app</button>
       </div>
     </form>
   )

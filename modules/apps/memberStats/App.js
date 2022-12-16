@@ -2,10 +2,14 @@ import { useEffect, useState } from "react"
 import { getAttestation } from "@modules/attestations"
 import StatCard from './StatCard'
 import cuid from "cuid"
+import { disable } from './register'
+import { useRouter } from "next/router"
 
-export default function App () {
-  const [ stats, setStats ] = useState(null)
-  const [ error, setError ] = useState(null)
+export default function App() {
+  const [stats, setStats] = useState(null)
+  const [error, setError] = useState(null)
+  const [waiting, setWaiting] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     (async () => {
@@ -18,23 +22,47 @@ export default function App () {
     })();
   }, [])
 
+  async function _disable(event) {
+    if (event) event.preventDefault()
+    setWaiting(true)
+    const ok = await disable()
+    setWaiting(false)
+    if (!ok) setError('failed to dsiable try again')
+    else router.replace(router.asPath)
+  }
+
   return (
-    <>
+    <div className="app">
       <style jsx>{`
-        h5 {
-          margin-top: 0;
+        .app, .cards {
+          display: flex;
+          width: 100%;
+          flex-direction: column;
+          align-items: center;
         }
-        div {
+        .cards {
+          display: flex;
+          flex-direction: row;
+          align-items: stretch;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+          width: 100%;
+        }
+        button {
+          margin-top: 1.8rem;
         }
       `}</style>
-      <h5>Member Stats</h5>
-      {error && <p>{error}</p>}
-      <div>
+      <h4>Member Stats</h4>
+      {error ? <p>{error}</p> : <></>}
+      <div className="cards">
         {!error && stats && stats.map(({ service, data }) => {
           const attestation = getAttestation(service)
-          return <StatCard key={cuid()} {...attestation} data={data} />
+          if (Object.keys(data).length) {
+            return <StatCard key={cuid()} {...attestation} data={data} />
+          }
         })}
       </div>
-    </>
+      <button disabled={waiting} onClick={_disable}>disable app</button>
+    </div>
   )
 }
