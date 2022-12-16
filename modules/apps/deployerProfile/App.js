@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { getAttestation } from "@modules/attestations"
-import StatCard from './StatCard'
 import cuid from "cuid"
 import { disable } from './register'
 import { useRouter } from "next/router"
@@ -57,10 +56,6 @@ export default function App() {
       {stats && !error && (
         <div className="cards">
           {stats.map(({ service, data }) => {
-            const attestation = getAttestation(service)
-            if (Object.keys(data).length) {
-              return <StatCard key={cuid()} {...attestation} data={data} />
-            }
           })}
         </div>
       )}

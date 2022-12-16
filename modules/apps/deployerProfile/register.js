@@ -1,6 +1,8 @@
 import sharedBox from '@utilities/encryption/shared-box'
 import secretBox from '@utilities/encryption/secret-box'
 import { hash, keyPairFromSignature } from '@utilities/encryption/utilities'
+import settingsCards from './settingsCards.js'
+import cuid from 'cuid'
 
 export async function enable({ user, sign }) {
   const signature = await sign(user.challenge)
@@ -51,10 +53,26 @@ export async function disable() {
   return result.ok
 }
 
-export function Disclosures({ services }) {
+export function Disclosures({ attestations, onSubmit }) {
+  const settings = [ ...attestations ]
+
+  function update(index, data) {
+    settings[index] = {
+      ...settings[index],
+      ...data,
+    }
+  }
 
   return (
     <>
+      {attestations.map(({ humanId, service }, index) => {
+        const Card = settingsCards[service]
+        return <Card 
+          key={cuid()}
+          humanId={humanId} 
+          update={data => update(index, data)} 
+        />
+      })}
     </>
   )
 }

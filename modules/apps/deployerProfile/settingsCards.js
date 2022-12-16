@@ -29,23 +29,23 @@ const styles = css`
   }
 `
 
-export default function Card({
-  name,
-  icon,
-  data,
+function EmailCard({
+  humanId,
+  update,
 }) {
   return (
     <div>
       <style jsx>{styles}</style>
-      <h5>
-        <Icon id={icon} size={24} />
-        {name}
-      </h5>
-      <pre>
-        {Object.keys(data).map(key => {
-          return <span key={cuid()}>{Case.capital(key)} - {data[key]}<br/></span>
-        })}
-      </pre>
+      <h5><Icon id="Mail" size={24} /> Email</h5>
+      <pre>{humanId}</pre>
+      <label>
+        <input type="checkbox" onChange={e => { update({ include: e.target.checked }) }}/>
+        include
+      </label>
     </div>
   )
+}
+
+export default {
+  email: EmailCard
 }
