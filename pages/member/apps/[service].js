@@ -25,9 +25,9 @@ export default function Member({ user, session: { userId } }) {
           display: flex;
           justify-content: center; 
         }
-        :global(a.back) {
+        .content :global(a.back) {
           position: absolute;
-          top: 10.1rem;
+          top: 10rem;
           left: 2.2rem;
           color: var(--main-color);
           text-decoration: none;
@@ -35,8 +35,16 @@ export default function Member({ user, session: { userId } }) {
           display: flex;
           align-items: center;
         }
-        h4 {
-          margin-top: 1.2rem;
+        .content :global(h4) {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        }
+        .content :global(h4) :global(svg) {
+          margin-right: .8rem;
+        }
+        .content :global(p.error) {
           text-align: center;
         }
       `}</style>

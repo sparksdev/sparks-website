@@ -4,7 +4,6 @@ import StatCard from './StatCard'
 import cuid from "cuid"
 import { disable } from './register'
 import { useRouter } from "next/router"
-import Icon from "@elements/Icon"
 
 export default function App() {
   const [stats, setStats] = useState(null)
@@ -53,7 +52,7 @@ export default function App() {
           margin-top: 1.8rem;
         }
       `}</style>
-      <h4><Icon id="StatsReport" size={24}/> Member Stats</h4>
+      <h4>Member Stats</h4>
       {error ? <p>{error}</p> : <></>}
       {stats && !error && (
         <div className="cards">

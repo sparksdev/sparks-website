@@ -3,6 +3,7 @@ import useMetamask from '@hooks/metamask'
 import { useRouter } from 'next/router'
 import css from 'styled-jsx/css'
 import { enable } from './register'
+import Icon from '@elements/Icon'
 
 const styles = css`
   form {
@@ -45,7 +46,7 @@ export default function SignUp({ user }) {
   return (
     <form onSubmit={enable}>
       <style jsx>{styles}</style>
-      <h4>Sparks Stats</h4>
+      <h4><Icon id="StatsReport" size={24}/> Member Stats</h4>
       <p>SPARKS wants to encrypt your identifiers using a shared key & store them to compute aggregate stats. Individual data is only be used to calculate totals & will not be stored individually.</p>
       <p>We'll use these stats to signal the strength of the community & seek opportunities to bring value to the ecosystem.</p>
       {error ? <p className="error">{error}</p> : <></>}
