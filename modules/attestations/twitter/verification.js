@@ -57,8 +57,9 @@ async function checkForTweet(from, nonce, resolve, count) {
   })
 
   const json = await search.json()
+  
   const tweet = json.data?.filter((t) => t.text.includes(nonce))[0] || null
-  if (!tweet && count < 12) {
+  if (!tweet && count < 8) {
     return setTimeout(() => {
       checkForTweet(from, nonce, resolve, count + 1)
     }, 5000)
