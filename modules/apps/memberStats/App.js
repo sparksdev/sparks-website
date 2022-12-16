@@ -54,15 +54,21 @@ export default function App() {
       `}</style>
       <h4>Member Stats</h4>
       {error ? <p>{error}</p> : <></>}
-      <div className="cards">
-        {!error && stats && stats.map(({ service, data }) => {
-          const attestation = getAttestation(service)
-          if (Object.keys(data).length) {
-            return <StatCard key={cuid()} {...attestation} data={data} />
-          }
-        })}
-      </div>
-      <button disabled={waiting} onClick={_disable}>disable app</button>
+      {stats && !error && (
+        <div className="cards">
+          {stats.map(({ service, data }) => {
+            const attestation = getAttestation(service)
+            if (Object.keys(data).length) {
+              return <StatCard key={cuid()} {...attestation} data={data} />
+            }
+          })}
+        </div>
+      )}
+      {!stats && !error ? (
+        <p>loading...</p>
+      ) : (
+        <button disabled={waiting} onClick={_disable}>disable app</button>
+      )}
     </div>
   )
 }
