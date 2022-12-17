@@ -37,6 +37,7 @@ export default function Dialog({ onVerified, onCancel, user }) {
     const encrypted = {
       systemId: secretBox.encrypt(systemId, keyPair.secretKey),
       humanId: secretBox.encrypt(humanId, keyPair.secretKey),
+      hash:  hash(systemId + humanId),
     }
 
     result = await fetch('/api/attestations/email', {

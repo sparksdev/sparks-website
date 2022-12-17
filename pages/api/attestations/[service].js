@@ -20,10 +20,10 @@ async function verify(req, res) {
 
 async function update(req, res) {
   const { service } = req.query
-  const { systemId, humanId } = req.body
+  const { systemId, humanId, hash } = req.body
   const { userId } = req.session
   const attestation = await prisma.attestation.create({
-    data: { userId, service, systemId, humanId },
+    data: { userId, service, systemId, humanId, hash },
   })
   return res.json({ ok: true, attestation })
 }

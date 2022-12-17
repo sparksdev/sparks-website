@@ -17,6 +17,7 @@ model User {
 
 model Attestation {
   attestationId String @id @default(cuid())
+  hash String?
   systemId String
   humanId  String
   service Service
