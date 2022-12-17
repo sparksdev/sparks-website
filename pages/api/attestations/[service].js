@@ -22,10 +22,15 @@ async function update(req, res) {
   const { service } = req.query
   const { systemId, humanId, hash } = req.body
   const { userId } = req.session
-  const attestation = await prisma.attestation.create({
-    data: { userId, service, systemId, humanId, hash },
-  })
-  return res.json({ ok: true, attestation })
+
+  try {
+    const attestation = await prisma.attestation.create({
+      data: { userId, service, systemId, humanId, hash },
+    })
+    return res.json({ ok: true, attestation })
+  } catch(e) {
+    return res.status(500).send('already attested with this user')
+  }
 }
 
 async function remove(req, res) {

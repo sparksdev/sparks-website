@@ -17,12 +17,13 @@ model User {
 
 model Attestation {
   attestationId String @id @default(cuid())
-  hash String?
+  hash String
   systemId String
   humanId  String
   service Service
   userId String
   user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  @@unique([userId, hash])
 }
 
 model MemberStats {
