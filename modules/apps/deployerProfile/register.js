@@ -7,7 +7,7 @@ import { useState } from 'react'
 export async function enable({ user, sign, profile: decryptedProfile, contracts: encryptedContracts }) {
   const signature = await sign(user.challenge)
   const keyPair = keyPairFromSignature(signature)
-
+ 
   const profile = sharedBox.encrypt(
     JSON.stringify(decryptedProfile),
     keyPair.secretKey,
