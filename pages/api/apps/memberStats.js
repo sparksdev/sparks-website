@@ -85,7 +85,7 @@ async function updateStats(req, res) {
   const data = {
     email: {
       total: services.email?.length,
-      academic: services.email?.reduce((t, a) => t + a.academic ? 1 : 0, 0),
+      academic: services.email?.reduce((t, a) => t + (a.academic ? 1 : 0), 0),
     },
     domain: {
       total: services.domain?.length,

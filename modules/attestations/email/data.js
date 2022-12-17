@@ -8,5 +8,5 @@ export default async function (entries) {
       academic: universities.includes(entry.humanId.split('@')[1])
     })
   })
-  return entries
+  return data
 }
