@@ -35,8 +35,8 @@ async function removeIdentifiers(req, res) {
 }
 
 async function updateStats(req, res) {
-  const cachedData = cache.get('data')
-  const cachedReport = cache.get('report')
+  const cachedData = cache.get('memberStatsData')
+  const cachedReport = cache.get('memberStatsReport')
   const timestamp = new Date().getTime()
   const refreshMinutes = 15
 
@@ -116,7 +116,7 @@ async function updateStats(req, res) {
 
   const updatedAt = new Date().getTime()
   const rawData = Object.keys(data).map(service => ({ service, data: data[service] }))
-  cache.put('data', { data: rawData, updatedAt })
+  cache.put('memberStatsData', { data: rawData, updatedAt })
   if (!req.query.report) {
     return res.json({ data: rawData, updatedAt })
   }
@@ -140,7 +140,7 @@ async function updateStats(req, res) {
   if (data.medium.followers) report.push(`We are followed by ${data.medium.following} Medium readers`)
   if (data.medium.following) report.push(`We follow and read ${data.medium.following} Medium authors`)
 
-  cache.put('report', { report, updatedAt })
+  cache.put('memberStatsReport', { report, updatedAt })
   res.json({ report, updatedAt })
 }
 

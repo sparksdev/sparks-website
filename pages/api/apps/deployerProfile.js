@@ -3,6 +3,7 @@ import { prisma } from '@utilities/database'
 import { decrypt } from '@utilities/encryption/shared-box'
 import { hash } from '@utilities/encryption/utilities'
 import { withSession } from '@utilities/session/server-routes'
+import cache from 'memory-cache'
 
 async function addContracts(req, res) {
   const { publicKey, contracts, profile } = req.body
@@ -30,7 +31,15 @@ async function removeContracts(req, res) {
 async function getProfile(req, res) {
   const { userId } = req.session
   const { contract } = req.query
-  if (!userId && !contract) return res.status(404).send('not foundd')
+  if (!userId && !contract) return res.status(404).send('not found')
+
+  const cachedProfile = cache.get(`deployerProfile_${contract}`)
+  const timestamp = new Date().getTime()
+  const refreshMinutes = 60
+  if (cachedProfile && (timestamp - cachedProfile.updatedAt) < (60 * 1000 * refreshMinutes)) {
+    return res.json(cachedProfile.profile)
+  }
+
   const record = contract 
     ? await prisma.deployerProfile.findFirst({ where: { contract: hash(contract) }})
     : await prisma.deployerProfile.findFirst({ where: { userId }})
@@ -91,6 +100,7 @@ async function getProfile(req, res) {
     }
   }
 
+  cache.put(`deployerProfile_${contract}`, { profile, updatedAt: new Date().getTime() })
   return res.status(200).json(profile)
 }
 
