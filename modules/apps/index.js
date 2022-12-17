@@ -2,8 +2,8 @@ import { default as memberStats } from './memberStats'
 import { default as deployerProfile } from './deployerProfile'
 
 const apps = [
+  memberStats,
   deployerProfile,
-  memberStats
 ]
 
 export function getApp(service) {
