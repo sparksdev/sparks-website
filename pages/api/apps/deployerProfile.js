@@ -55,6 +55,7 @@ async function getProfile(req, res) {
         service: settings.service,
         matches: settings.usePattern && (new RegExp(settings.pattern)).test(data.humanId) ? settings.pattern : undefined,
         email: !settings.usePattern ? data.humanId : undefined,
+        academic: settings.categorize ? data.academic : undefined,
       })
     }
     if (settings.service === 'domain') {
