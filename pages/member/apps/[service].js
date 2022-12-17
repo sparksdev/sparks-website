@@ -51,7 +51,7 @@ export default function Member({ user, session: { userId } }) {
       <div className='content'>
         <Link className="back" href="/member/apps"><Icon id="ArrowLeft" />back</Link>
         {user.apps[service] ? (
-          <App />
+          <App user={user} />
         ) : (
           <Signup user={user} />
         )}

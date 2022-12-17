@@ -66,17 +66,20 @@ export default function SignUp({ user }) {
     setSettingUp(true)
   }
 
-  async function _enable(event) {
-    event.preventDefault()
+  async function handleSubmit(settings) {
+    const profile = settings.filter(s => s.include).map(({ error, ...data }) => data)
+    if (!profile.length) return handleCancel()
+    const contracts = user.attestations.filter(a => a.service === 'smartContract').map(({ humanId }) => humanId)
     setWaiting(true)
-    const ok = await enable({ user, sign })
+    const ok = await enable({ contracts, profile, user, sign })
     setWaiting(false)
+    setSettingUp(false)
+    setAttestations(null)
     if (!ok) setError('failed to enable try again')
     else router.replace(router.asPath)
   }
 
-  async function cancel(event) {
-    event.preventDefault()
+  async function handleCancel() {
     setSettingUp(false)
     setAttestations(null)
   }
@@ -95,7 +98,7 @@ export default function SignUp({ user }) {
       <style jsx>{styles}</style>
       <h4>Deployer Profile</h4>
       {settingUp ? (
-        <Disclosures attestations={attestations} onSubmit={_enable} onCancel={cancel} />
+        <Disclosures attestations={attestations} handleSubmit={handleSubmit} handleCancel={handleCancel} />
       ) : (
         <>
           <p>

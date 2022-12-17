@@ -1,23 +1,22 @@
 import { useEffect, useState } from "react"
-import { getAttestation } from "@modules/attestations"
-import cuid from "cuid"
 import { disable } from './register'
 import { useRouter } from "next/router"
+import ServiceCard from './ServiceCard'
+import cuid from "cuid"
 
-export default function App() {
-  const [stats, setStats] = useState(null)
+export default function App({ user }) {
+  const [profile, setProfile] = useState(null)
   const [error, setError] = useState(null)
   const [waiting, setWaiting] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
     (async () => {
-      const result = await fetch('/api/apps/memberStats?update=1')
-      const failed = 'could not load stats try again later'
+      const result = await fetch('/api/apps/deployerProfile')
+      const failed = 'could not load profiles try again later'
       if (!result.ok) return setError(failed)
-      const { data } = await result.json()
-      if (!data || !Array.isArray(data)) return setError(failed)
-      setStats(data)
+      const json = await result.json()
+      setProfile(json)
     })();
   }, [])
 
@@ -50,20 +49,26 @@ export default function App() {
         button {
           margin-top: 1.8rem;
         }
+        .buttons {
+          margin-bottom: 2.4rem;
+        }
       `}</style>
-      <h4>Member Stats</h4>
+      <h4>Deployer Profile</h4>
       {error ? <p>{error}</p> : <></>}
-      {stats && !error && (
+      {profile && !error && (
         <div className="cards">
-          {stats.map(({ service, data }) => {
-          })}
+          {profile.map(({ service, ...data }) => (
+            <ServiceCard key={cuid()} service={service} data={data} />
+          ))}
         </div>
       )}
-      {!stats && !error ? (
-        <p>loading...</p>
-      ) : (
-        <button disabled={waiting} onClick={_disable}>disable app</button>
-      )}
+      <div className="buttons">
+        {!profile && !error ? (
+          <p>loading...</p>
+        ) : (
+          <button disabled={waiting} onClick={_disable}>disable app</button>
+        )}
+      </div>
     </div>
   )
 }

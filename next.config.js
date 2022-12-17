@@ -4,6 +4,7 @@ const nextConfig = {
   env: {
     ORIGIN: process.env.ORIGIN,
     STATS_PUBLIC_KEY: process.env.STATS_PUBLIC_KEY,
+    DEPLOYER_PROFILE_PUBLIC_KEY: process.env.DEPLOYER_PROFILE_PUBLIC_KEY,
   },
   webpack: (config) => {
     config.resolve.fallback = {

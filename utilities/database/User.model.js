@@ -24,6 +24,7 @@ export default class User {
       include: {
         attestations: true,
         memberStats: true,
+        deployerProfile: true,
       },
     })
 
@@ -31,6 +32,7 @@ export default class User {
 
     user.apps = {
       memberStats: user.memberStats.length,
+      deployerProfile: user.deployerProfile.length,
     }
 
     return user

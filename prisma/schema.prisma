@@ -12,6 +12,7 @@ model User {
   challenge String
   attestations Attestation[]
   memberStats MemberStats[]
+  deployerProfile DeployerProfile[]
 }
 
 model Attestation {
@@ -33,6 +34,15 @@ model MemberStats {
   userId String
   user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
   @@unique([userId, hash])
+}
+
+model DeployerProfile {
+  deployerProfileId String @id @default(cuid())
+  contract String @unique
+  profile String
+  publicKey String
+  userId String
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 enum Service {
