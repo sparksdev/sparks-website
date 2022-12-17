@@ -46,6 +46,7 @@ async function checkBiography(username, nonce) {
     const crawler = new CheerioCrawler({
       async requestHandler({ request, response, body, contentType, $ }) {
         verified = $('.pw-post-body-paragraph').text().includes(nonce)
+        verified = verified || $('meta[name="description"]').attr('content').includes(nonce)
       },
       async errorHandler() {
         verified = false
