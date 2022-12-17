@@ -40,8 +40,8 @@ async function updateStats(req, res) {
   const timestamp = new Date().getTime()
   const refreshMinutes = 15
 
-  if (cachedData && timestamp - cachedData.updatedAt < 60 * 1000 * refreshMinutes) {
-    return req.query.data ? res.json(cachedData) : res.json(cachedReport)
+  if (cachedData && (timestamp - cachedData.updatedAt) < (60 * 1000 * refreshMinutes)) {
+    return req.query.report ? res.json(cachedReport) : res.json(cachedData)
   }
 
   // get all records and keep only unique hashes for stats
@@ -114,11 +114,10 @@ async function updateStats(req, res) {
   }
 
   const updatedAt = new Date().getTime()
-
-  cache.put('data', { data, updatedAt })
-
+  const rawData = Object.keys(data).map(service => ({ service, data: data[service] }))
+  cache.put('data', { data: rawData, updatedAt })
   if (!req.query.report) {
-    return res.json({ data: Object.keys(data).map(service => ({ service, data: data[service] })), updatedAt })
+    return res.json({ data: rawData, updatedAt })
   }
 
   const report = []

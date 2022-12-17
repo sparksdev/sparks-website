@@ -14,10 +14,11 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      const result = await fetch('/api/apps/memberStats?update=1')
+      const result = await fetch('/api/apps/memberStats')
       const failed = 'could not load stats try again later'
       if (!result.ok) return setError(failed)
       const { data } = await result.json()
+      console.log(data)
       if (!data || !Array.isArray(data)) return setError(failed)
       setStats(data)
     })();
@@ -52,6 +53,9 @@ export default function App() {
         button {
           margin-top: 1.8rem;
         }
+        .buttons {
+          margin-bottom: 2.4rem;
+        }
       `}</style>
       <h4><Icon id="StatsReport" size={24}/> Member Stats</h4>
       {error ? <p>{error}</p> : <></>}
@@ -65,11 +69,13 @@ export default function App() {
           })}
         </div>
       )}
-      {!stats && !error ? (
-        <p>loading...</p>
-      ) : (
-        <button disabled={waiting} onClick={_disable}>disable app</button>
-      )}
+      <div className="buttons">
+        {!stats && !error ? (
+          <p>loading...</p>
+        ) : (
+          <button disabled={waiting} onClick={_disable}>disable app</button>
+        )}
+      </div>
     </div>
   )
 }
