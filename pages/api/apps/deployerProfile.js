@@ -67,25 +67,25 @@ async function getProfile(req, res) {
       profile.push({
         service: settings.service,
         username: settings.show_handle ? data.humanId : undefined,
-        public_repos: settings.public_repos ? data.public_repos : undefined,
-        public_gists: settings.public_gists ? data.public_gists : undefined,
-        followers: settings.followers ? data.followers : undefined,
-        contributions: settings.contributions ? data.contributions : undefined,
+        public_repos: settings.public_repos ? (Math.round(data.public_repos / 10) * 10) : undefined,
+        public_gists: settings.public_gists ? (Math.round(data.public_gists / 10) * 10) : undefined,
+        followers: settings.followers ? (Math.round(data.followers / 10) * 10) : undefined,
+        contributions: settings.contributions ? (Math.round(data.contributions / 10) * 10) : undefined,
       })
     }
     if (settings.service === 'twitter') {
       profile.push({
         service: settings.service,
         handle: settings.show_handle ? '@' + data.username : undefined,
-        followers: settings.followers ? data.public_metrics.followers_count : undefined,
-        tweets: settings.tweets ? data.public_metrics.tweet_count : undefined,
+        followers: settings.followers ? (Math.round(data.public_metrics.followers_count / 10) * 10) : undefined,
+        tweets: settings.tweets ? (Math.round(data.public_metrics.tweet_count / 10) * 10) : undefined,
       })
     }
     if (settings.service === 'medium') {
       profile.push({
         service: settings.service,
         username: settings.show_handle ? '@' + data.humanId : undefined,
-        followers: settings.followers ? data.followers : undefined,
+        followers: settings.followers ? (Math.round(data.followers / 10) * 10) : undefined,
       })
     }
   }
