@@ -1,6 +1,7 @@
 import Icon from '@elements/Icon'
 import css from 'styled-jsx/css'
 import Link from 'next/link'
+import Logo from '@elements/Logo'
 
 const styles = css`
   footer {
@@ -27,7 +28,7 @@ const styles = css`
   li :global(a):visited {
     color: currentColor;
   }
-  li :global(.icon) {
+  li :global(.icon), li :global(.logo) {
     margin-right: 1.2rem;
   }
   small {
@@ -42,6 +43,12 @@ export default function Footer(props) {
       <style jsx>{styles}</style>
       <section>
         <ul>
+          <li>
+            <Link target="_blank" href="https://sparks.dev/deployerProfile/0x5F5C86A9F8aAF63Ce27b82FaB3B33DF73CbC3d12">
+              <Logo size={20} />
+              Profile
+            </Link>
+          </li>
           <li>
             <Link target="_blank" href="https://twitter.com/sparksdev_">
               <Icon id="Twitter" size={20} strokeWidth={2} />
