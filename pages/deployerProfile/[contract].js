@@ -62,7 +62,7 @@ export default function App({ contract }) {
         <h4>Deployer Profile</h4>
         <h5>{contract}</h5>
         {error && <p>{error}</p>}
-        {waiting && <p>loading...</p>}
+        {waiting && !error && <p>loading...</p>}
         {!waiting && profile && (
           <div className="cards">
             {profile.map(({ service, ...data }) => (
