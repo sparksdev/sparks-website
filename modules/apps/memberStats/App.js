@@ -18,7 +18,6 @@ export default function App() {
       const failed = 'could not load stats try again later'
       if (!result.ok) return setError(failed)
       const { data } = await result.json()
-      console.log(data)
       if (!data || !Array.isArray(data)) return setError(failed)
       setStats(data)
     })();

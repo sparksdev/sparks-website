@@ -85,6 +85,7 @@ async function updateStats(req, res) {
   const data = {
     email: {
       total: services.email?.length,
+      academic: services.email?.reduce((t, a) => t + a.academic ? 1 : 0, 0),
     },
     domain: {
       total: services.domain?.length,
@@ -122,6 +123,7 @@ async function updateStats(req, res) {
 
   const report = []
   if (data.email.total) report.push(`We have ${data.email.total} verified Emails`)
+  if (data.email.total) report.push(`We have ${data.email.total} academic Emails`)
   if (data.domain.total) report.push(`We own ${data.domain.total} Websites`)
   if (data.github.total) report.push(`We are ${data.github.total} developers on GitHub`)
   if (data.github.publicRepos) report.push(`We have published ${data.github.publicRepos} public GitHub repos`)
