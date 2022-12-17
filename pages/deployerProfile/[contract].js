@@ -20,7 +20,7 @@ export default function App({ contract }) {
       setWaiting(false)
       setProfile(json)
     })();
-  }, [])
+  }, [ contract ])
 
   return (
     <>
