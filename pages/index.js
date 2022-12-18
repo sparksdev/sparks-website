@@ -14,7 +14,7 @@ export default function Home({ session: { userId }, user }) {
     <>
       <style jsx>{styles}</style>
       <Head />
-      <Header userId={userId} />
+      <Header userId={userId} protect={false} />
       <section id="hero">
         <Logo size={60} />
         <h1>SPARKS</h1>

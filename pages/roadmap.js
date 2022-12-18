@@ -10,7 +10,7 @@ export default function RoadMap({ user }) {
     <>
       <style jsx>{styles}</style>
       <Head />
-      <Header user={user} />
+      <Header user={user} protect={false} />
       <section>
         <h2>Roadmap</h2>
         <p>

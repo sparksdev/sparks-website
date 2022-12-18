@@ -60,14 +60,14 @@ const styles = css`
   }
 `
 
-export default function Header({ userId }) {
+export default function Header({ userId, protect = true }) {
   const { address, active, connect, disconnect, sign } = useMetamask()
   const { openDialog, closeDialog } = useDialog()
   const router = useRouter()
   const { theme, setTheme } = useTheme()
 
   useEffect(() => {
-    if (!active) return
+    if (!active || !protect) return
     const handleLoggedOut = async () => {
       const currentUser = hash(address || '')
       if (!address || !active || (!!userId && userId !== currentUser)) {

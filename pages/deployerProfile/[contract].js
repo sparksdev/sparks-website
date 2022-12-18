@@ -25,7 +25,7 @@ export default function App({ contract }) {
   return (
     <>
       <Head />
-      <Header />
+      <Header protect={false} />
       <div className="app">
         <style jsx>{`
             .app {
