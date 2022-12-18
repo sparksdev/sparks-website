@@ -91,6 +91,7 @@ const custom = {
   medium: Icons.Medium,
   domain: Icons.Www,
   smartContract: Icons.StatsReport,
+  youtube: Icons.YouTube,
 }
 
 export default function Icon({ id, className = '', title = '', ...props }) {

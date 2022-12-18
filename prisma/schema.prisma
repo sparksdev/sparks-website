@@ -54,5 +54,6 @@ enum Service {
   phone
   twitter
   domain
+  youtube
   smartContract
 }

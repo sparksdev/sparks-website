@@ -35,6 +35,7 @@ async function removeIdentifiers(req, res) {
 }
 
 async function updateStats(req, res) {
+  cache.clear()
   const cachedData = cache.get('memberStatsData')
   const cachedReport = cache.get('memberStatsReport')
   const timestamp = new Date().getTime()
@@ -111,6 +112,11 @@ async function updateStats(req, res) {
       followers: services.github?.reduce((t, a) => t + a.followers, 0),
       following: services.github?.reduce((t, a) => t + a.following, 0),
       contributions: services.github?.reduce((t, a) => t + a.contributions, 0),
+    },
+    youtube: {
+      total: services.youtube?.length,
+      views: services.youtube?.reduce((t, a) => t + a.views, 0),
+      subscribers: services.youtube?.reduce((t, a) => t + a.subscribers, 0),
     }
   }
 
@@ -139,6 +145,9 @@ async function updateStats(req, res) {
   if (data.medium.total) report.push(`We are ${data.medium.total} Medium content authors`)
   if (data.medium.followers) report.push(`We are followed by ${data.medium.following} Medium readers`)
   if (data.medium.following) report.push(`We follow and read ${data.medium.following} Medium authors`)
+  if (data.youtube.total) report.push(`We are ${data.youtube.total} YouTube content creators`)
+  if (data.youtube.subscribers) report.push(`We have ${data.youtube.subscribers} YouTube subscribers`)
+  if (data.youtube.views) report.push(`We have gotten ${data.youtube.views} views on YouTube`)
 
   cache.put('memberStatsReport', { report, updatedAt })
   res.json({ report, updatedAt })
