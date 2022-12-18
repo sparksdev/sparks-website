@@ -72,6 +72,13 @@ const defaultSettings = {
     show_handle: false,
     followers: false,
     error: null,
+  },
+  youtube: {
+    include: false,
+    show_handle: false,
+    subscribers: false,
+    views: false,
+    error: null,
   }
 }
 

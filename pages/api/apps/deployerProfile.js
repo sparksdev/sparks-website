@@ -98,6 +98,14 @@ async function getProfile(req, res) {
         followers: settings.followers ? (Math.round(data.followers / 10) * 10) : undefined,
       })
     }
+    if (settings.service === 'youtube') {
+      profile.push({
+        service: settings.service,
+        channel: settings.show_handle ? '@' + data.humanId : undefined,
+        subscribers: settings.subscribers ? (Math.round(data.subscribers / 10) * 10) : undefined,
+        views: settings.views ? (Math.round(data.views / 10) * 10) : undefined,
+      })
+    }
   }
 
   cache.put(`deployerProfile_${contract}`, { profile, updatedAt: new Date().getTime() })
@@ -105,6 +113,7 @@ async function getProfile(req, res) {
 }
 
 async function handler(req, res) {
+  if (req.method === 'GET' && req.query.update) cache.clear()
   if (req.method === 'GET') return getProfile(req, res)
   if (req.method === 'POST') return addContracts(req, res)
   if (req.method === 'DELETE') return removeContracts(req, res)

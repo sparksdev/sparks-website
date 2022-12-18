@@ -355,6 +355,74 @@ function MediumCard({ settings, update }) {
   )
 }
 
+function YouTubeCard({ settings, update }) {
+  return (
+    <div>
+      <style jsx>{styles}</style>
+      <h5><Icon id="YouTube" size={24} /> YouTube</h5>
+      <label>
+        <input
+          type="checkbox"
+          checked={settings.include}
+          onChange={e => {
+            update({
+              ...settings,
+              include: e.target.checked,
+              show_handle: e.target.checked ? settings.show_handle : false,
+              subscribers: e.target.checked ? settings.subscribers : false,
+              views: e.target.checked ? settings.views : false,
+            })
+          }}
+        />
+        include {settings.humanId}
+      </label>
+      {settings.include && (
+        <>
+          <label>
+            <input
+              type="checkbox"
+              checked={settings.show_handle}
+              onChange={e => {
+                update({
+                  ...settings,
+                  show_handle: e.target.checked,
+                })
+              }}
+            />
+            show handle
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={settings.subscribers}
+              onChange={e => {
+                update({
+                  ...settings,
+                  subscribers: e.target.checked,
+                })
+              }}
+            />
+            include subscribers count
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={settings.views}
+              onChange={e => {
+                update({
+                  ...settings,
+                  views: e.target.checked,
+                })
+              }}
+            />
+            include views count
+          </label>
+        </>
+      )}
+    </div>
+  )
+}
+
 
 export default {
   email: EmailCard,
@@ -362,5 +430,6 @@ export default {
   github: GitHubCard,
   twitter: TwitterCard,
   medium: MediumCard,
+  youtube: YouTubeCard,
 }
 
