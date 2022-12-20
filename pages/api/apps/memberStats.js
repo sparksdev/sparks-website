@@ -129,7 +129,7 @@ async function updateStats(req, res) {
 
   const report = []
   if (data.email.total) report.push(`We have ${data.email.total} verified Emails`)
-  if (data.email.total) report.push(`We have ${data.email.total} academic Emails`)
+  if (data.email.academic) report.push(`We have ${data.email.academic} academic Emails`)
   if (data.domain.total) report.push(`We own ${data.domain.total} Websites`)
   if (data.github.total) report.push(`We are ${data.github.total} developers on GitHub`)
   if (data.github.publicRepos) report.push(`We have published ${data.github.publicRepos} public GitHub repos`)
@@ -143,7 +143,7 @@ async function updateStats(req, res) {
   if (data.twitter.following) report.push(`We follow ${data.twitter.following} Twitter account`)
   if (data.twitter.tweets) report.push(`We have published over ${data.twitter.tweets} Tweets`)
   if (data.medium.total) report.push(`We are ${data.medium.total} Medium content authors`)
-  if (data.medium.followers) report.push(`We are followed by ${data.medium.following} Medium readers`)
+  if (data.medium.followers) report.push(`We are followed by ${data.medium.followers} Medium readers`)
   if (data.medium.following) report.push(`We follow and read ${data.medium.following} Medium authors`)
   if (data.youtube.total) report.push(`We are ${data.youtube.total} YouTube content creators`)
   if (data.youtube.subscribers) report.push(`We have ${data.youtube.subscribers} YouTube subscribers`)
