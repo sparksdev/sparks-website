@@ -78,6 +78,7 @@ export default function App({ contract }) {
             }
             .app h5 {
               text-align: center;
+              width: 100%;
               max-width: 60rem;;
               overflow: hidden;
               text-overflow: ellipsis;

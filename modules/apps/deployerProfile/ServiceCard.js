@@ -26,6 +26,8 @@ const styles = css`
   }
   pre span {
     font: inherit;
+    display: flex;
+    align-items: center;
   }
 `
 
@@ -42,6 +44,9 @@ export default function Card({
       </h5>
       <pre>
         {Object.keys(data).map(key => {
+          if (typeof data[key] == "boolean") {
+            return <span key={cuid()}>{Case.capital(key)} - <Icon id="Check" size={18} /><br/></span>
+          }
           return <span key={cuid()}>{Case.capital(key)} - {data[key]}<br/></span>
         })}
       </pre>

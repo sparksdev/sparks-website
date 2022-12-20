@@ -29,7 +29,6 @@ async function removeContracts(req, res) {
 }
 
 async function getProfile(req, res) {
-  cache.clear()
   const { userId } = req.session
   const { contract } = req.query
   if (!userId && !contract) return res.status(404).send('not found')
@@ -65,8 +64,8 @@ async function getProfile(req, res) {
     if (settings.service === 'email') {
       profile.push({
         service: settings.service,
+        email: !settings.usePattern ? data.humanId : 'hidden',
         matches: settings.usePattern && (new RegExp(settings.pattern)).test(data.humanId) ? settings.pattern : undefined,
-        email: !settings.usePattern ? data.humanId : undefined,
         academic: settings.categorize ? data.academic : undefined,
       })
     }
@@ -79,34 +78,34 @@ async function getProfile(req, res) {
     if (settings.service === 'github') {
       profile.push({
         service: settings.service,
-        username: settings.show_handle ? data.humanId : undefined,
-        public_repos: settings.public_repos ? (Math.round(data.public_repos / 10) * 10) : undefined,
-        public_gists: settings.public_gists ? (Math.round(data.public_gists / 10) * 10) : undefined,
-        followers: settings.followers ? (Math.round(data.followers / 10) * 10) : undefined,
-        contributions: settings.contributions ? (Math.round(data.contributions / 10) * 10) : undefined,
+        username: settings.show_handle ? data.humanId : 'hidden',
+        public_repos: settings.public_repos ? (settings.show_handle ? data.public_repos : (Math.round(data.public_repos / 10) * 10)) : undefined,
+        public_gists: settings.public_gists ? (settings.show_handle ? data.public_gists : (Math.round(data.public_gists / 10) * 10)) : undefined,
+        followers: settings.followers ? (settings.show_handle ? data.followers : (Math.round(data.followers / 10) * 10)) : undefined,
+        contributions: settings.contributions ? (settings.show_handle ? data.contributions : (Math.round(data.contributions / 10) * 10)) : undefined,
       })
     }
     if (settings.service === 'twitter') {
       profile.push({
         service: settings.service,
-        handle: settings.show_handle ? '@' + data.username : undefined,
-        followers: settings.followers ? (Math.round(data.public_metrics.followers_count / 10) * 10) : undefined,
-        tweets: settings.tweets ? (Math.round(data.public_metrics.tweet_count / 10) * 10) : undefined,
+        handle: settings.show_handle ? '@' + data.username : 'hidden',
+        followers: settings.followers ? (settings.show_handle ? data.public_metrics.followers_count : (Math.round(data.public_metrics.followers_count / 10) * 10)) : undefined,
+        tweets: settings.tweets ? (settings.show_handle ? data.public_metrics.tweet_count : (Math.round(data.public_metrics.tweet_count / 10) * 10)) : undefined,
       })
     }
     if (settings.service === 'medium') {
       profile.push({
         service: settings.service,
-        username: settings.show_handle ? '@' + data.humanId : undefined,
-        followers: settings.followers ? (Math.round(data.followers / 10) * 10) : undefined,
+        username: settings.show_handle ? '@' + data.humanId : 'hidden',
+        followers: settings.followers ? (settings.show_handle ? data.followers : (Math.round(data.followers / 10) * 10)) : undefined,
       })
     }
     if (settings.service === 'youtube') {
       profile.push({
         service: settings.service,
-        channel: settings.show_handle ? '@' + data.humanId : undefined,
-        subscribers: settings.subscribers ? (Math.round(data.subscribers / 10) * 10) : undefined,
-        views: settings.views ? (Math.round(data.views / 10) * 10) : undefined,
+        channel: settings.show_handle ? '@' + data.humanId : 'hidden',
+        subscribers: settings.subscribers ? (settings.show_handle ? data.subscribers : (Math.round(data.subscribers / 10) * 10)) : undefined,
+        views: settings.views ? (settings.show_handle ? data.views : (Math.round(data.views / 10) * 10)) : undefined,
       })
     }
   }
