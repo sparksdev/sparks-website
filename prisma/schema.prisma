@@ -41,7 +41,7 @@ model MemberStats {
 model DeployerProfile {
   deployerProfileId String @id @default(cuid())
   contract String @unique
-  signature String? @unique
+  signature String @unique
   profile String
   publicKey String
   userId String
