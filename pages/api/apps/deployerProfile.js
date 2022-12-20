@@ -10,11 +10,11 @@ async function addContracts(req, res) {
   const { userId } = req.session
   if (!userId) return res.status(403).send('forbidden')
   const results = await prisma.$transaction(
-    contracts.map((contract) => {
+    contracts.map(({ contract, signature }) => {
       return prisma.deployerProfile.upsert({
         where: { contract: contract },
-        update: { contract, userId, profile, publicKey },
-        create: { contract, userId, profile, publicKey },
+        update: { contract, signature, userId, profile, publicKey },
+        create: { contract, signature, userId, profile, publicKey },
       })
     })
   )
@@ -29,6 +29,7 @@ async function removeContracts(req, res) {
 }
 
 async function getProfile(req, res) {
+  cache.clear()
   const { userId } = req.session
   const { contract } = req.query
   if (!userId && !contract) return res.status(404).send('not found')
@@ -37,7 +38,7 @@ async function getProfile(req, res) {
   const timestamp = new Date().getTime()
   const refreshMinutes = 60
   if (cachedProfile && (timestamp - cachedProfile.updatedAt) < (60 * 1000 * refreshMinutes)) {
-    return res.json(cachedProfile.profile)
+    return res.json(cachedProfile)
   }
 
   const record = contract 
@@ -51,6 +52,8 @@ async function getProfile(req, res) {
     process.env.DEPLOYER_PROFILE_SECRET_KEY,
     record.publicKey
   ))
+
+  const signature = record.signature
 
   const profile = []
   for(let settings of services) {
@@ -108,12 +111,37 @@ async function getProfile(req, res) {
     }
   }
 
-  cache.put(`deployerProfile_${contract}`, { profile, updatedAt: new Date().getTime() })
-  return res.status(200).json(profile)
+  cache.put(`deployerProfile_${contract}`, { profile, signature, updatedAt: new Date().getTime() })
+  return res.status(200).json({ profile, signature })
+}
+
+async function confirmDeployer(req, res) {
+  const { contract, address } = req.query
+
+  const url =
+    `https://api.etherscan.io/api` +
+    `?module=contract&action=getcontractcreation` +
+    `&contractaddresses=${contract}` +
+    `&apikey=${process.env.ETHERSCAN_API_KEY}`
+
+  const result = await fetch(url)
+  if (!result.ok) {
+    return res.status(500).send(result.statusText)
+  }
+
+  const json = await result.json()
+  const verified = !!json.result?.find(
+    ({ contractCreator }) =>
+      contractCreator.toLowerCase() === address.toLowerCase()
+  )
+  return res.json({ verified })
 }
 
 async function handler(req, res) {
   if (req.method === 'GET' && req.query.update) cache.clear()
+  if (req.method === 'GET' && req.query.contract && req.query.address) {
+    return confirmDeployer(req, res)
+  } 
   if (req.method === 'GET') return getProfile(req, res)
   if (req.method === 'POST') return addContracts(req, res)
   if (req.method === 'DELETE') return removeContracts(req, res)

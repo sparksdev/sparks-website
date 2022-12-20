@@ -15,8 +15,8 @@ export default function App({ user }) {
       const result = await fetch('/api/apps/deployerProfile')
       const failed = 'could not load profiles try again later'
       if (!result.ok) return setError(failed)
-      const json = await result.json()
-      setProfile(json)
+      const { profile } = await result.json()
+      setProfile(profile)
     })();
   }, [])
 

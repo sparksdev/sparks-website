@@ -5,6 +5,7 @@ import settingsCards from './settingsCards.js'
 import { useState } from 'react'
 
 export async function enable({ user, sign, profile: decryptedProfile, contracts: encryptedContracts }) {
+
   const signature = await sign(user.challenge)
   const keyPair = keyPairFromSignature(signature)
  
@@ -14,9 +15,16 @@ export async function enable({ user, sign, profile: decryptedProfile, contracts:
     process.env.DEPLOYER_PROFILE_PUBLIC_KEY
   )
 
-  const contracts = encryptedContracts.map(contract => {
-    return hash(secretBox.decrypt(contract, keyPair.secretKey))
+  const decryptedContracts = encryptedContracts.map(contract => {
+    return secretBox.decrypt(contract, keyPair.secretKey)
   })
+
+  const contracts = await Promise.all(decryptedContracts.map(async contract => {
+    return {
+      signature: await sign(contract),
+      contract: hash(contract),
+    }
+  }))
 
   const result = await fetch('/api/apps/deployerProfile', {
     method: 'POST',
@@ -24,7 +32,7 @@ export async function enable({ user, sign, profile: decryptedProfile, contracts:
     body: JSON.stringify({ 
       publicKey: keyPair.publicKey, 
       contracts,
-      profile, 
+      profile,
     }),
   })
 
