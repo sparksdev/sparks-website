@@ -17,7 +17,7 @@ export default function App({ contract }) {
     (async () => {
       setWaiting(true)
       const result = await fetch(`/api/apps/deployerProfile?contract=${contract}`)
-      const failed = `Contract ${contract} not found`
+      const failed = `contract could not be found`
       if (!result.ok) return setError(failed)
       const { profile, signature } = await result.json()
       setWaiting(false)
@@ -32,8 +32,9 @@ export default function App({ contract }) {
     const contract = event.target.contract.value
     const address = ethers.utils.verifyMessage(contract, signature)
     const result = await fetch(`/api/apps/deployerProfile?contract=${contract}&address=${address}`)
+    const failed = `couldn't verify deployer address`
     setWaiting(false)
-    if (!result.ok) return
+    if (!result.ok) return setError(failed)
     const { verified } = await result.json()
     if (verified) setVerifiedAddress(address)
   }
@@ -59,6 +60,12 @@ export default function App({ contract }) {
             }
             .app h4 {
               margin-bottom: 0rem;
+            }
+            .app h6 {
+              font-weight: bold;
+              font-style: italic;
+              margin-bottom: 0;
+              margin-top: 1.2rem;
             }
             .cards {
               display: flex;
@@ -100,13 +107,14 @@ export default function App({ contract }) {
             }
           `}</style>
         <h4>Deployer Profile</h4>
-        {error ? <h5>{error}</h5> : (
-          <h5>Contract<br />{contract}</h5>
-        )}
+        {error && <h6>{error}</h6>}
+        <h5>Contract<br />{contract}</h5>
         {waiting && !error && <h5>loading</h5>}
         {!waiting && profile && (
           <>
-            {verifiedAddress ? (
+            {verifiedAddress  && error ? (
+              <h6>{error}</h6>
+            ) : verifiedAddress ? (
               <>
                 <h5>Deployer Address</h5>
                 <h5>{verifiedAddress}</h5>
@@ -121,11 +129,13 @@ export default function App({ contract }) {
                 </form>
               </>
             )}
-            <div className="cards">
-              {profile.map(({ service, ...data }) => (
-                <ServiceCard key={cuid()} service={service} data={data} />
-              ))}
-            </div>
+            {!error && verifiedAddress && (
+              <div className="cards">
+                {profile.map(({ service, ...data }) => (
+                  <ServiceCard key={cuid()} service={service} data={data} />
+                ))}
+              </div>
+            )}
           </>
         )}
       </div>
