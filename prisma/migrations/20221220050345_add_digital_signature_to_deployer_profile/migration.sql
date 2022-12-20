@@ -6,7 +6,7 @@
 
 */
 -- AlterTable
-ALTER TABLE "DeployerProfile" ADD COLUMN     "signature" TEXT NOT NULL;
+ALTER TABLE "DeployerProfile" ADD COLUMN     "signature" TEXT;
 
 -- CreateIndex
 CREATE UNIQUE INDEX "DeployerProfile_signature_key" ON "DeployerProfile"("signature");
