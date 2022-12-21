@@ -35,7 +35,6 @@ async function removeIdentifiers(req, res) {
 }
 
 async function updateStats(req, res) {
-  cache.clear()
   const cachedData = cache.get('memberStatsData')
   const cachedReport = cache.get('memberStatsReport')
   const timestamp = new Date().getTime()
