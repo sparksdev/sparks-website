@@ -11,6 +11,7 @@ export const redirects = [
   { subdomain: 'gitcoin', href: 'https://gitcoin.co/sparksdev' },
   { subdomain: 'medium', href: 'https://medium.com/@sparksdev' },
   { subdomain: 'telegram', href: 'https://t.me/sparks_official' },
+  { subdomain: 'notion', href: 'https://sparksdev.notion.site/sparksdev/SPARKS-b3450f9c62d74923960f69eece7be6c3' },
 ]
 
 export function middleware(req) {
