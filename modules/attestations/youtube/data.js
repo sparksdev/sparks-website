@@ -19,7 +19,7 @@ export default async function (entries) {
 
       const viewsMatch = body.match(/"simpleText":"([\d,\.]+)([KM]*)\s*views"/)
       try {
-        const viewsNumber = (viewsMatch[1] || '0').replace(',', '')
+        const viewsNumber = (viewsMatch[1] || '0').replaceAll(',', '')
         const viewsMultiplier = multipliers[viewsMatch[2] || 'none']
         userData.views = parseInt(parseFloat(viewsNumber) * viewsMultiplier)
       } catch (e) {
@@ -28,7 +28,7 @@ export default async function (entries) {
 
       const subscribersMatch = body.match(/"simpleText":"([\d,\.]+)([KM]*)\s*subscribers"/)
       try {
-        const subscribersNumber = (subscribersMatch[1] || '0').replace(',', '')
+        const subscribersNumber = (subscribersMatch[1] || '0').replaceAll(',', '')
         const subscribersMultiplier = multipliers[subscribersMatch[2] || 'none']
         userData.subscribers = parseInt(parseFloat(subscribersNumber) * subscribersMultiplier)
       } catch(e) {
